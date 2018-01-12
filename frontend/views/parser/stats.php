@@ -27,6 +27,14 @@ $this->title = 'Parser stats';
                     <td>Count:</td>
                     <td><?=$count;?></td>
                 </tr>
+				<tr>
+                    <td>Xml:</td>
+                    <td><a href="/<?=\Yii::$app->settings->get('file.xml');?>"><?=\Yii::$app->settings->get('file.xml');?></a></td>
+                </tr>
+				<tr>
+                    <td>Xls:</td>
+                    <td><a href="/<?=\Yii::$app->settings->get('file.xls');?>"><?=\Yii::$app->settings->get('file.xls');?></a></td>
+                </tr>
             </table>
         </div>
         <div class="col-md-6">

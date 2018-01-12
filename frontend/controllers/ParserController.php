@@ -8,10 +8,30 @@ use core\entities\Products;
 use core\jobs\ParseJob;
 use core\services\Api;
 use yii\web\Controller;
+use yii\filters\AccessControl;
 
 class ParserController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+		
     /**
      * @var Api
      */
@@ -28,16 +48,12 @@ class ParserController extends Controller
     {
         $date = \Yii::$app->settings->get('parser.date');
         $count = Products::find()->count();
-        $xls = \Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('file.xls'));
-        $xml = \Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('file.xml'));
         $status = \Yii::$app->settings->get('parser.is_job');
 
 
         return $this->render('stats', [
             'count' => $count,
             'date' => $date,
-            'xls' => $xls,
-            'xml' => $xml,
             'status' => $status,
         ]);
     }

@@ -11,7 +11,7 @@ use core\pages\AuthPage;
 use core\pages\HomePage;
 use core\services\Client;
 
-class LoginAction
+class LoginAction  
 {
     /**
      * @var Client
@@ -40,7 +40,7 @@ class LoginAction
         }
         $form->token = $home->getToken();
 
-        $request = $this->client->post(AuthPage::URL, $form->getPostData())->send();
+        $request = $this->client->post(AuthPage::URL, $form->getPostData())->send(); 
         if($request->isOk) {
             $home = new HomePage($request->content);
 

@@ -40,6 +40,7 @@ class ProductAction
             $products = [];
 
             foreach ($links as $link) {
+				var_dump('Load: ' . $link);
                 $request = $this->client->get($link)->send();
                 if ($request->isOk) {
                     $productPage = new ProductPage($request->content);

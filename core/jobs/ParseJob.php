@@ -62,7 +62,9 @@ class ParseJob extends BaseObject implements JobInterface
                     $page++;
                 } while ($productsList->hasNext);
             }
-        }
+        } else {
+			var_dump('sdfsdf');
+		}
 
         $products = Products::find()->all();
 
@@ -70,7 +72,7 @@ class ParseJob extends BaseObject implements JobInterface
             'products' => $products
         ]));
 
-        \Yii::$app->queue->push(new Xlsjob());
+        \Yii::$app->queue->push(new XlsJob());
         \Yii::$app->settings->set('parser.date', time());
 
         \Yii::$app->settings->set('parser.is_job', 0);
