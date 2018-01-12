@@ -32,7 +32,6 @@ class ProductAction
     public function run($category, $page)
     {
         $url = $category->link . '?page=' . $page;
-        print_r('Load category: ' . $url . "\n");
         $request = $this->client->get($url)->send();
         if ($request->isOk) {
             $page = new CategoryPage($request->content);
@@ -41,7 +40,6 @@ class ProductAction
             $products = [];
 
             foreach ($links as $link) {
-                print_r('Load product: ' . $link . "\n");
                 $request = $this->client->get($link)->send();
                 if ($request->isOk) {
                     $productPage = new ProductPage($request->content);
@@ -49,7 +47,6 @@ class ProductAction
                 } else {
                     throw new RequestException('Failed load page: ' . $link);
                 }
-                break;
             }
             $list = new ProductList($products, $page->hasNext());
             return $list;
