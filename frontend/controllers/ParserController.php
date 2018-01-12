@@ -7,6 +7,7 @@ namespace frontend\controllers;
 use core\entities\Products;
 use core\jobs\ParseJob;
 use core\services\Api;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 
@@ -49,8 +50,7 @@ class ParserController extends Controller
         $date = \Yii::$app->settings->get('parser.date');
         $count = Products::find()->count();
         $status = \Yii::$app->settings->get('parser.is_job');
-        $task = count(scandir(\Yii::getAlias('@console/runtime/queue'))) - 2;
-
+        $task = (new Query())->from('queue')->andWhere(['channel' => 'default'])->count();
 
         return $this->render('stats', [
             'count' => $count,

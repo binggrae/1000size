@@ -42,7 +42,7 @@ $this->title = 'Parser stats';
             </table>
         </div>
         <div class="col-md-6">
-            <?php if(!$status) : ?>
+            <?php if(!$status && $task == 0) : ?>
                 <a class="btn btn-primary" href="<?=Url::to('/parser/start');?>">
                     Start
                 </a>
