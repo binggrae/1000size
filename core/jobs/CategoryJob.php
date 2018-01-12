@@ -28,7 +28,6 @@ class CategoryJob extends BaseObject implements JobInterface
     public function execute($queue)
     {
         foreach ($this->links as $link) {
-            var_dump('Load: ' . $link);
             $request = $this->client->get($link)->send();
             if ($request->isOk) {
                 $productPage = new ProductPage($request->content);

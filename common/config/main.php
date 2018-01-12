@@ -24,9 +24,13 @@ return [
             'class' => 'pheme\settings\components\Settings'
         ],
         'queue' => [
-            'class' => '\yii\queue\file\Queue',
-            'path' => '@console/runtime/queue',
-            'ttr' => 0
+            'class' => '\yii\queue\db\Queue',
+            'db' => 'db',
+            'tableName' => '{{%queue}}',
+            'channel' => 'default',
+            'mutex' => '\yii\mutex\MysqlMutex',
+            'ttr' => 20000,
+            'attempts' => 3,
         ],
         
     ],
