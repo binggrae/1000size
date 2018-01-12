@@ -49,12 +49,14 @@ class ParserController extends Controller
         $date = \Yii::$app->settings->get('parser.date');
         $count = Products::find()->count();
         $status = \Yii::$app->settings->get('parser.is_job');
+        $task = count(scandir(\Yii::getAlias('@console/runtime/queue'))) - 2;
 
 
         return $this->render('stats', [
             'count' => $count,
             'date' => $date,
             'status' => $status,
+            'task' => $task,
         ]);
     }
 

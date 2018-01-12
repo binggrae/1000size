@@ -18,6 +18,10 @@ $this->title = 'Parser stats';
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>Task:</td>
+                    <td><?=$task;?></td>
+                </tr>
 
                 <tr>
                     <td>Date:</td>
