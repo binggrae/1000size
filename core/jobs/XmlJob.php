@@ -18,6 +18,7 @@ class XmlJob extends BaseObject implements JobInterface
 
     public function execute($queue)
     {
+        $this->products = Products::find()->all();
         $xml = new Xml($this->products);
         $xml->generate();
         $xml->save('@frontend/web/' . \Yii::$app->settings->get('file.xml'));

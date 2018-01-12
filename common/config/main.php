@@ -23,14 +23,14 @@ return [
         'settings' => [
             'class' => 'pheme\settings\components\Settings'
         ],
-         'queue' => [
+        'queue' => [
             'class' => '\yii\queue\db\Queue',
-            'db' => 'db', 
-            'tableName' => '{{%queue}}', 
-            'channel' => 'default', 
-            'mutex' => '\yii\mutex\MysqlMutex', 
-			'ttr' => 20000,
-			'attempts' => 3,
+            'db' => 'db',
+            'tableName' => '{{%queue}}',
+            'channel' => 'default',
+            'mutex' => '\yii\mutex\MysqlMutex',
+            'ttr' => 20000,
+            'attempts' => 3,
         ],
         
     ],

@@ -59,11 +59,7 @@ class ParseJob extends BaseObject implements JobInterface
             }
         }
 
-        $products = Products::find()->all();
-
-        \Yii::$app->queue->delay(5 * 60)->push(new XmlJob([
-            'products' => $products
-        ]));
+        \Yii::$app->queue->delay(5 * 60)->push(new XmlJob());
 
         \Yii::$app->queue->delay(5 * 60)->push(new XlsJob());
         \Yii::$app->settings->set('parser.date', time());
