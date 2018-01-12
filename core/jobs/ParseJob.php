@@ -53,26 +53,19 @@ class ParseJob extends BaseObject implements JobInterface
                 $page = 1;
 
                 do {
-                    $productsList = $this->api->getProducts($category, $page);
-
-                    foreach ($productsList->list as $item) {
-                        $product = new Products(get_object_vars($item));
-                        $product->save();
-                    }
+                    $categoryPage = $this->api->getProducts($category, $page);
                     $page++;
-                } while ($productsList->hasNext);
+                } while ($categoryPage->hasNext());
             }
-        } else {
-			var_dump('sdfsdf');
-		}
+        }
 
         $products = Products::find()->all();
 
-        \Yii::$app->queue->push(new XmlJob([
+        \Yii::$app->queue->delay(5 * 60)->push(new XmlJob([
             'products' => $products
         ]));
 
-        \Yii::$app->queue->push(new XlsJob());
+        \Yii::$app->queue->delay(5 * 60)->push(new XlsJob());
         \Yii::$app->settings->set('parser.date', time());
 
         \Yii::$app->settings->set('parser.is_job', 0);
