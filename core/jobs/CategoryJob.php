@@ -17,7 +17,7 @@ class CategoryJob extends BaseObject implements JobInterface
     /**
      * @var Client
      */
-    private $client;
+    private $client; 
 
     public function __construct(Client $client, array $config = [])
     {
@@ -28,7 +28,6 @@ class CategoryJob extends BaseObject implements JobInterface
     public function execute($queue)
     {
         foreach ($this->links as $link) {
-            var_dump('Load: ' . $link);
             $request = $this->client->get($link)->send();
             if ($request->isOk) {
                 $productPage = new ProductPage($request->content);

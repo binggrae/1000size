@@ -25,8 +25,9 @@ class SetUp implements BootstrapInterface
         });
 
         \Yii::$app->queue->on(Queue::EVENT_AFTER_ERROR, function (ErrorEvent $event) {
+			var_dump($event);
             if ($event->job instanceof ParseJob) {
-                \Yii::$app->settings->set('parser.is_job', 0);
+                \Yii::$app->settings->set('parser.is_job', 0); 
             }
         });
 

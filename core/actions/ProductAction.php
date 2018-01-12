@@ -33,7 +33,6 @@ class ProductAction
     public function run($category, $page)
     {
         $url = $category->link . '?page=' . $page;
-        var_dump($url);
         $request = $this->client->get($url)->send();
         if ($request->isOk) {
             $page = new CategoryPage($request->content);
