@@ -93,7 +93,10 @@ class Xml
 
     private function generateBrand($brand)
     {
-        return $this->xml->createElement('Производитель', $brand);
+		$brand = str_replace('&', ' ',  $brand);
+	
+		return $this->xml->createElement('Производитель', $brand);
+	
     }
 
     private function generateCountry($country)

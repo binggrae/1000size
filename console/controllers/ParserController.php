@@ -8,6 +8,7 @@ use arogachev\excel\import\basic\Importer;
 use core\entities\Products;
 use core\jobs\ParseJob;
 use core\jobs\XmlJob;
+use core\jobs\XlsJob;
 use core\services\Api;
 use yii\console\Controller;
 use core\exceptions\RequestException;
@@ -53,8 +54,9 @@ class ParserController extends Controller
     public function actionXls()
     {
 
-        $dir = \Yii::getAlias('@console/runtime/queue');
-        echo count(scandir($dir)) - 2;
+            \Yii::$app->queue->push(new XmlJob());
+
+            \Yii::$app->queue->push(new XlsJob());
 
     }
 

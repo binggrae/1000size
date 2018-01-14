@@ -35,6 +35,7 @@ class ParseJob extends BaseObject implements JobInterface
     public function execute($queue)
     {
         if (\Yii::$app->settings->get('parser.is_job')) {
+			var_dump('Parser is runner');
             return;
         }
 
@@ -49,6 +50,7 @@ class ParseJob extends BaseObject implements JobInterface
 
         if ($this->api->login($form)) {
             $categories = $this->api->getCategories();
+			var_dump($categories);
             foreach ($categories as $category) {
                 $page = 1;
 
@@ -57,11 +59,9 @@ class ParseJob extends BaseObject implements JobInterface
                     $page++;
                 } while ($categoryPage->hasNext());
             }
-        }
-
-        \Yii::$app->queue->delay(5 * 60)->push(new XmlJob());
-
-        \Yii::$app->queue->delay(5 * 60)->push(new XlsJob());
+        } else {
+			var_dump('Bad login');
+		}
         \Yii::$app->settings->set('parser.date', time());
 
         \Yii::$app->settings->set('parser.is_job', 0);

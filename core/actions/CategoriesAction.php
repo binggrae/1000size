@@ -22,6 +22,7 @@ class CategoriesAction
     public function run()
     {
         $request = $this->client->get(CategoriesPage::URL)->send();
+		file_put_contents(\Yii::getAlias('@common/data/t.html'), $request->content);
         if ($request->isOk) {
             $page = new CategoriesPage($request->content);
             return $page->getList();

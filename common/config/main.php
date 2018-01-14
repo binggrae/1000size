@@ -29,7 +29,7 @@ return [
             'tableName' => '{{%queue}}',
             'channel' => 'default',
             'mutex' => '\yii\mutex\MysqlMutex',
-            'ttr' => 20000,
+            'ttr' => 1000,
             'attempts' => 3,
         ],
         

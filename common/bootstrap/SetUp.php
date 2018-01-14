@@ -75,9 +75,9 @@ class SetUp implements BootstrapInterface
     private function parse()
     {
         if(Task::find()->count() == 0) {
-            \Yii::$app->queue->delay(5 * 60)->push(new XmlJob());
+            \Yii::$app->queue->delay(60)->push(new XmlJob());
 
-            \Yii::$app->queue->delay(5 * 60)->push(new XlsJob());
+            \Yii::$app->queue->delay(60)->push(new XlsJob());
         }
     }
 
