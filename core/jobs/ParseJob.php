@@ -60,7 +60,6 @@ class ParseJob extends BaseObject implements JobInterface
                         $categoryPage = $this->api->getProducts($log->id, $category, $page);
                         $page++;
                     } while ($categoryPage->hasNext());
-                    break;
                 }
             } else {
                 $this->end();

@@ -42,7 +42,6 @@ class CategoryJob extends BaseObject implements JobInterface
             } else {
                 continue;
             }
-            break;
         }
         $log->end(count($this->links));
     }
