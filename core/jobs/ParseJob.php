@@ -4,6 +4,7 @@
 namespace core\jobs;
 
 
+use core\entities\logs\ParserLog;
 use core\entities\Products;
 use core\forms\LoginForm;
 use core\services\Api;
@@ -16,7 +17,6 @@ class ParseJob extends BaseObject implements JobInterface
     public $login;
 
     public $password;
-
     /**
      * @var Api
      */
@@ -34,8 +34,9 @@ class ParseJob extends BaseObject implements JobInterface
      */
     public function execute($queue)
     {
+        $log = ParserLog::start();
         if (\Yii::$app->settings->get('parser.is_job')) {
-			var_dump('Parser is runner');
+            $log->error(ParserLog::CODE_ALREADY_RUNNING);
             return;
         }
 
@@ -48,20 +49,37 @@ class ParseJob extends BaseObject implements JobInterface
 
         Products::deleteAll();
 
-        if ($this->api->login($form)) {
-            $categories = $this->api->getCategories();
-			var_dump($categories);
-            foreach ($categories as $category) {
-                $page = 1;
+        try {
+            $categories = [];
+            if ($this->api->login($form)) {
+                $categories = $this->api->getCategories();
+                foreach ($categories as $category) {
+                    $page = 1;
 
-                do {
-                    $categoryPage = $this->api->getProducts($category, $page);
-                    $page++;
-                } while ($categoryPage->hasNext());
+                    do {
+                        $categoryPage = $this->api->getProducts($log->id, $category, $page);
+                        $page++;
+                    } while ($categoryPage->hasNext());
+                    break;
+                }
+            } else {
+                $this->end();
+                $log->error(ParserLog::CODE_BAD_LOGIN);
+                return;
             }
-        } else {
-			var_dump('Bad login');
-		}
+        } catch (\Exception $e) {
+            $log->error(ParserLog::CODE_UNKNOWN, $e->getMessage());
+            throw $e;
+        }
+
+        $this->end();
+
+        $log->end(count($categories));
+    }
+
+
+    public function end()
+    {
         \Yii::$app->settings->set('parser.date', time());
 
         \Yii::$app->settings->set('parser.is_job', 0);

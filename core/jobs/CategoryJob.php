@@ -4,6 +4,7 @@
 namespace core\jobs;
 
 
+use core\entities\logs\CategoryLog;
 use core\entities\Products;
 use core\exceptions\RequestException;
 use core\pages\ProductPage;
@@ -14,6 +15,9 @@ use yii\queue\JobInterface;
 class CategoryJob extends BaseObject implements JobInterface
 {
     public $links;
+
+    public $log_id;
+    public $log_link;
     /**
      * @var Client
      */
@@ -27,6 +31,7 @@ class CategoryJob extends BaseObject implements JobInterface
 
     public function execute($queue)
     {
+        $log = CategoryLog::start($this->log_id, $this->log_link);
         foreach ($this->links as $link) {
             $request = $this->client->get($link)->send();
             if ($request->isOk) {
@@ -34,11 +39,12 @@ class CategoryJob extends BaseObject implements JobInterface
 
                 $product = new Products(get_object_vars($productPage->getData()));
                 $product->save();
-
             } else {
-                throw new RequestException('Failed load page: ' . $link);
+                continue;
             }
+            break;
         }
+        $log->end(count($this->links));
     }
 
 

@@ -54,9 +54,9 @@ class Api
     }
 
 
-    public function getProducts($category, $page = 0)
+    public function getProducts($log_id, $category, $page = 0)
     {
-        return $this->product->run($category, $page);
+        return $this->product->run($log_id, $category, $page);
     }
 
 

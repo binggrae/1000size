@@ -26,11 +26,12 @@ class ProductAction
 
 
     /**
+     * @param $log_id
      * @param Root $category
      * @param $page
      * @return CategoryPage
      */
-    public function run($category, $page)
+    public function run($log_id, $category, $page)
     {
         $url = $category->link . '?page=' . $page;
         $request = $this->client->get($url)->send();
@@ -39,7 +40,9 @@ class ProductAction
             $links = $page->getLinks();
 
             \Yii::$app->queue->push(new CategoryJob($this->client, [
-                'links' => $links
+                'links' => $links,
+                'log_id' => $log_id,
+                'log_link' => $url
             ]));
             return $page;
         } else {

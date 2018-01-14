@@ -44,19 +44,16 @@ class ParserController extends Controller
 
     public function actionSave()
     {
-        \Yii::$app->queue->push(new XmlJob([
-            'products' => Products::find()->all()
-        ]));
-
+        \Yii::$app->queue->priority(1000)->push(new XmlJob());
+        \Yii::$app->queue->priority(1000)->push(new XlsJob());
     }
 
 
     public function actionXls()
     {
-
-            \Yii::$app->queue->push(new XmlJob());
-
-            \Yii::$app->queue->push(new XlsJob());
+        echo date_default_timezone_get();
+            var_dump(date('d.m.Y h:i:s', '1515921200'));
+            var_dump(date('d.m.Y h:i:s', '1515921260'));
 
     }
 

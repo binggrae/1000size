@@ -46,7 +46,7 @@ class SetUp implements BootstrapInterface
                 Task::deleteAll(['pid' => $event->id]);
 
                 if(Task::find()->count() == 0) {
-                    $this->parse();
+                    $this->parse($event->job->log_id);
                 }
             }
         });
@@ -63,7 +63,7 @@ class SetUp implements BootstrapInterface
                 Task::deleteAll(['pid' => $event->id]);
 
                 if(Task::find()->count() == 0) {
-                    $this->parse();
+                    $this->parse($event->job->log_id);
                 }
             }
         });
@@ -72,12 +72,12 @@ class SetUp implements BootstrapInterface
 
     }
 
-    private function parse()
+    private function parse($log_id)
     {
         if(Task::find()->count() == 0) {
-            \Yii::$app->queue->delay(60)->push(new XmlJob());
+            \Yii::$app->queue->priority(1000)->push(new XmlJob(['log_id' => $log_id]));
 
-            \Yii::$app->queue->delay(60)->push(new XlsJob());
+            \Yii::$app->queue->priority(1000)->push(new XlsJob(['log_id' => $log_id]));
         }
     }
 
