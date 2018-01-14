@@ -9,6 +9,7 @@ return [
         'common\bootstrap\SetUp',
         'queue'
     ],
+	'timeZone' => 'Europe/Moscow', 
     'modules' => [
         'settings' => [
             'class' => 'pheme\settings\Module',
