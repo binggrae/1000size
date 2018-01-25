@@ -5,7 +5,7 @@ namespace core\services\power;
 
 
 
-use core\entities\Products;
+use core\entities\power\Products;
 
 class Importer
 {
