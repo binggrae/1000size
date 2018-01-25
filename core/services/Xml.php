@@ -4,13 +4,13 @@
 namespace core\services;
 
 
-use core\entities\Products;
+use core\entities\ProductInterface;
 
 class Xml
 {
-    
+
     private $products;
-    
+
     private $xml;
 
     public function __construct($products)
@@ -18,8 +18,8 @@ class Xml
         $this->products = $products;
         $this->xml = new \domDocument("1.0", "utf-8");
     }
-    
-    
+
+
     public function generate()
     {
         $root = $this->generateRoot();
@@ -31,27 +31,46 @@ class Xml
 
     /**
      * @param \DOMElement $root
-     * @param Products $product
+     * @param ProductInterface $product
      */
-    private function generateProduct($root, $product)
+    private function generateProduct($root, ProductInterface $product)
     {
         $el = $this->xml->createElement('Товар');
 
-        $el->appendChild($this->generateBarcode($product->barcode));
-        $el->appendChild($this->generateTitle($product->title));
+        if (!is_null($product->getBarcodeVal())) {
+            $el->appendChild($this->generateBarcode($product->getBarcodeVal()));
+        }
+        if (!is_null($product->getTitleVal())) {
+            $el->appendChild($this->generateTitle($product->getTitleVal()));
+        }
 
-        $el->appendChild($this->generateUnit($product->unit));
-        $el->appendChild($this->generateStorageM($product->storageM));
-        $el->appendChild($this->generateStorageV($product->storageV));
+        if (!is_null($product->getUnitVal())) {
+            $el->appendChild($this->generateUnit($product->getUnitVal()));
+        }
+        if (!is_null($product->getStorageMVal())) {
+            $el->appendChild($this->generateStorageM($product->getStorageMVal()));
+        }
+        if (!is_null($product->getStorageVVal())) {
+            $el->appendChild($this->generateStorageV($product->getStorageVVal()));
+        }
 
-        $el->appendChild($this->generateRetail($product->retail));
-        $el->appendChild($this->generatePurchase($product->purchase));
-        $el->appendChild($this->generateBrand($product->brand));
-        $el->appendChild($this->generateCountry($product->country));
+        if (!is_null($product->getRetailVal())) {
+            $el->appendChild($this->generateRetail($product->getRetailVal()));
+        }
+        if (!is_null($product->getPurchaseVal())) {
+            $el->appendChild($this->generatePurchase($product->getPurchaseVal()));
+        }
+        if (!is_null($product->getBrandVal())) {
+            $el->appendChild($this->generateBrand($product->getBrandVal()));
+        }
+        if (!is_null($product->getCountryVal())) {
+            $el->appendChild($this->generateCountry($product->getCountryVal()));
+        }
 
         $root->appendChild($el);
 
     }
+
     private function generateBarcode($barcode)
     {
         return $this->xml->createElement('Артикул', $barcode);
@@ -59,7 +78,9 @@ class Xml
 
     private function generateTitle($title)
     {
+        $title = str_replace('&', '_', $title);
         return $this->xml->createElement('Наименование', $title);
+
     }
 
     private function generateUnit($unit)
@@ -93,10 +114,10 @@ class Xml
 
     private function generateBrand($brand)
     {
-		$brand = str_replace('&', ' ',  $brand);
-	
-		return $this->xml->createElement('Производитель', $brand);
-	
+        $brand = str_replace('&', ' ', $brand);
+
+        return $this->xml->createElement('Производитель', $brand);
+
     }
 
     private function generateCountry($country)
@@ -110,11 +131,11 @@ class Xml
         $root->setAttribute('ДатаСоздания', date('n/d/Y H:i:s A', time()));
 
         $this->xml->appendChild($root);
-        
+
         return $root;
     }
-    
-    
+
+
     public function save($path)
     {
         $this->xml->save(\Yii::getAlias($path));

@@ -3,19 +3,11 @@
 
 namespace console\controllers;
 
-
-use arogachev\excel\import\basic\Importer;
-use core\entities\Products;
-use core\jobs\ParseJob;
-use core\jobs\XmlJob;
-use core\jobs\XlsJob;
-use core\services\Api;
+use core\jobs\size\ParseJob;
+use core\jobs\size\XmlJob;
+use core\jobs\size\XlsJob;
+use core\services\size\Api;
 use yii\console\Controller;
-use core\exceptions\RequestException;
-use core\forms\LoginForm;
-use core\pages\AuthPage;
-use core\pages\HomePage;
-use core\services\Client;
 
 
 class ParserController extends Controller
@@ -45,17 +37,7 @@ class ParserController extends Controller
     public function actionSave()
     {
         \Yii::$app->queue->priority(1000)->push(new XmlJob());
-        \Yii::$app->queue->priority(1000)->push(new XlsJob());
+        \Yii::$app->queue->priority(1000)->push(new XmlJob());
     }
-
-
-    public function actionXls()
-    {
-        echo date_default_timezone_get();
-            var_dump(date('d.m.Y h:i:s', '1515921200'));
-            var_dump(date('d.m.Y h:i:s', '1515921260'));
-
-    }
-
 
 }

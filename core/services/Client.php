@@ -35,6 +35,12 @@ class Client
     }
 
 
+    public function batch($requests)
+    {
+        return $this->client->batchSend($requests);
+    }
+
+
     /**
      * @param $method
      * @param $url
@@ -52,6 +58,12 @@ class Client
 //            CURLOPT_VERBOSE => true,
         ];
 
+
+//        if($method == 'post') {
+//            $opt[CURLOPT_VERBOSE] = true;
+//        }
+
+//        $this->client->batchSend()
         $response = $this->client->createRequest()
             ->setMethod($method)
             ->setUrl($url)

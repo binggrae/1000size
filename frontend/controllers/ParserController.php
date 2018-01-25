@@ -4,10 +4,10 @@
 namespace frontend\controllers;
 
 
-use core\entities\Products;
+use core\entities\size\Products;
 use core\entities\Task;
-use core\jobs\ParseJob;
-use core\services\Api;
+use core\jobs\size\ParseJob;
+use core\services\size\Api;
 use yii\db\Query;
 use yii\web\Controller;
 use yii\filters\AccessControl;
