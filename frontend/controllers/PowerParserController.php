@@ -39,11 +39,16 @@ class PowerParserController extends Controller
         $imported = Products::find()->where(['status' => Products::STATUS_NEW])->count();
         $loaded = Products::find()->where(['status' => Products::STATUS_LOADED])->count();
         $removed = Products::find()->where(['status' => Products::STATUS_REMOVED])->count();
+        $job = Products::find()->where(['status' => Products::STATUS_IN_JOB])->count();
+
+        $model = new LoadForm();
 
         return $this->render('index', [
             'imported' => $imported,
             'loaded' => $loaded,
             'removed' => $removed,
+            'job' => $job,
+            'model' => $model
         ]);
 
     }
@@ -72,14 +77,14 @@ class PowerParserController extends Controller
 
     public function actionStart()
     {
-        if (!\Yii::$app->settings->get('power.is_job')) {
-            \Yii::$app->queue->push(new ParseJob($this->api, [
-                'login' => \Yii::$app->settings->get('power.login'),
-                'password' => \Yii::$app->settings->get('power.password'),
-            ]));
-        }
+        \Yii::$app->queue->push(new ParseJob([
+            'login' => \Yii::$app->settings->get('power.login'),
+            'password' => \Yii::$app->settings->get('power.password'),
+        ]));
 
-        return $this->redirect('stats');
+        sleep(5);
+
+        return $this->redirect('index');
     }
 
 
