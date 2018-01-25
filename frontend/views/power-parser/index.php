@@ -56,10 +56,12 @@ $this->title = 'Power Parser stats';
             <?php endif; ?>
         </div>
         <div class="col-md-4">
-            <?php $form = ActiveForm::begin(['options' => [
-                'action' => ['power-parser/load'],
-                'enctype' => 'multipart/form-data'
-            ]]); ?>
+            <?php $form = ActiveForm::begin([
+                'action' => Url::to(['/power-parser/load']),
+                'options' => [
+                    'enctype' => 'multipart/form-data'
+                ]
+            ]); ?>
 
             <?= $form->field($model, 'file')->fileInput(); ?>
 
