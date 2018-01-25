@@ -31,16 +31,20 @@ $this->title = 'Power Parser stats';
                 </tr>
                 <tr>
                     <td>Xml:</td>
-                    <td><a href="/<?=\Yii::$app->settings->get('power.xml');?>"><?=\Yii::$app->settings->get('power.xml');?></a></td>
+                    <td>
+                        <a href="/<?= \Yii::$app->settings->get('power.xml'); ?>"><?= \Yii::$app->settings->get('power.xml'); ?></a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Xls:</td>
-                    <td><a href="/<?=\Yii::$app->settings->get('power.xls');?>"><?=\Yii::$app->settings->get('power.xls');?></a></td>
+                    <td>
+                        <a href="/<?= \Yii::$app->settings->get('power.xls'); ?>"><?= \Yii::$app->settings->get('power.xls'); ?></a>
+                    </td>
                 </tr>
             </table>
         </div>
         <div class="col-md-4">
-            <?php if($job) : ?>
+            <?php if ($job) : ?>
                 <div class="btn btn-success disabled">
                     В работе
                 </div>
@@ -49,10 +53,11 @@ $this->title = 'Power Parser stats';
                 <a class="btn btn-primary" href="<?= Url::to('/power-parser/start'); ?>">
                     Запустить
                 </a>
-            <?php endif;?>
+            <?php endif; ?>
         </div>
         <div class="col-md-4">
             <?php $form = ActiveForm::begin(['options' => [
+                'action' => ['power-parser/load'],
                 'enctype' => 'multipart/form-data'
             ]]); ?>
 
