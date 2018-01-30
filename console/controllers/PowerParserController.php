@@ -45,6 +45,20 @@ class PowerParserController extends Controller
         \Yii::$app->queue->priority(2000)->push(new XlsJob());
     }
 
+    public function actionXls()
+    {
+        $file = \Yii::createObject([
+            'class' => 'codemix\excelexport\ExcelFile',
+            'sheets' => [
+                'ЦеныИОстатки' => [
+                    'class' => 'codemix\excelexport\ActiveExcelSheet',
+                    'query' => Products::find()->where(['!=', 'status', Products::STATUS_REMOVED]),
+                    'attributes' => ['barcodeVal', 'titleVal', 'unitVal', 'storageMVal', 'purchaseVal', 'retailVal'],
+                ]
+            ]
+        ]);
+        $file->saveAs(\Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('power.xls')));
+    }
 
 
 }

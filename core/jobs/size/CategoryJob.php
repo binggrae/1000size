@@ -49,12 +49,9 @@ class CategoryJob extends BaseObject implements JobInterface
                     $productPage = new ProductPage($response->content);
                     $data = $productPage->getData();
 
-                    var_dump($data);
-
                     $product = new Products(get_object_vars($data));
                     $product->save();
 
-                    die();
                 } else {
                     continue;
                 }
