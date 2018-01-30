@@ -4,7 +4,7 @@ namespace core\pages\size;
 
 class AuthPage
 {
-    const URL = 'http://opt.1000size.ru/signin?to=home';
+    const URL = 'https://opt.1000size.ru/signin?to=home';
 
     private $pq;
 

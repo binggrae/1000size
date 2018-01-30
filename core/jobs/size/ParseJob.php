@@ -50,9 +50,9 @@ class ParseJob extends BaseObject implements JobInterface
         Products::deleteAll();
 
         try {
-            $categories = [];
             if ($this->api->login($form)) {
                 $categories = $this->api->getCategories();
+
                 foreach ($categories as $category) {
                     $page = 1;
 

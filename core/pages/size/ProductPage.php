@@ -13,6 +13,8 @@ class ProductPage
 
     private $storageHtml;
 
+    private $unit;
+
     public function __construct($html)
     {
         $this->pq = \phpQuery::newDocumentHTML($html);
@@ -39,7 +41,7 @@ class ProductPage
 
     private function getBarcode()
     {
-        return trim($this->pq->find('.s-nomenclature__articul')->text());
+        return trim($this->pq->find('.s-nomenclature__articul span[itemprop="sku"')->text());
     }
 
     private function getTitle()
@@ -49,34 +51,41 @@ class ProductPage
 
     public function getUnit()
     {
-        return trim($this->pq->find('.s-text__mr_10:eq(0)')->html());
+        $this->getStorageHtml();
+        return $this->unit;
     }
 
     private function getStorageM()
     {
-        $storageHtml = $this->getStorageHtml();
-
-        preg_match('/>Склад Москва<\/span> <\/td> <td class="s-definition__value s-definition__value_text_right"> <span class="s-definition__value-inner"> ([\d\s]+)/u', $storageHtml, $math);
-        return !empty($math) ? (int)str_replace(' ', '', $math[1]) : 0;
+        return $this->getStorageHtml()['m'];
     }
 
     private function getStorageV()
     {
-        $storageHtml = $this->getStorageHtml();
-
-        preg_match('/>Склад Владивосток<\/span> <\/td> <td class="s-definition__value s-definition__value_text_right"> <span class="s-definition__value-inner"> ([\d\s]+)/u', $storageHtml, $math);
-        return !empty($math) ? (int)str_replace(' ', '', $math[1]) : 0;
+        return $this->getStorageHtml()['v'];
     }
 
     private function getStorageHtml()
     {
         if (!$this->storageHtml) {
-            $storageHtml = $this->pq->find('.s-definition tbody:eq(0)')->html();
-            $storageHtml = preg_replace("/  +/", " ", $storageHtml);
-            $storageHtml = str_replace("\n", "", $storageHtml);
-            $storageHtml = str_replace("\r", "", $storageHtml);
+            $pq = $this->pq->find('.s-catalog-groups__availability');
 
-            $this->storageHtml = $storageHtml;
+            $result = ['m' => 0, 'v' => 0];
+            foreach ($pq as $item) {
+                $val = explode(' ', pq($item)->find('.s-catalog-groups__availability-amount')->text());
+                $this->unit = array_pop($val);
+                $val = implode('', $val);
+                if (pq($item)
+                        ->find('.s-catalog-groups__availability-branch')
+                        ->text() == 'Склад Владивосток') {
+                    $result['v'] = (int)$val;
+                } elseif (pq($item)
+                        ->find('.s-catalog-groups__availability-branch')
+                        ->text() == 'Склад Москва') {
+                    $result['m'] = (int)$val;
+                }
+            }
+            $this->storageHtml = $result;
         }
 
         return $this->storageHtml;
@@ -84,12 +93,12 @@ class ProductPage
 
     private function getPurchase()
     {
-        return (int) trim($this->pq->find('.s-nomenclature__price')->attr('content'));
+        return (int)trim($this->pq->find('.s-nomenclature__price')->attr('content'));
     }
 
     private function getRetail()
     {
-        return (int) preg_replace("/[^0-9]/", '', $this->pq->find('.s-nomenclature__baseprice')->text());
+        return (int)preg_replace("/[^0-9]/", '', $this->pq->find('.s-nomenclature__baseprice')->text());
     }
 
     private function getBrand()
@@ -99,7 +108,7 @@ class ProductPage
 
     private function getCountry()
     {
-        $countryHtml = $this->pq->find('#nomenclature_attributes')->html();
+        $countryHtml = $this->pq->find('#list_attributes')->html();
         $countryHtml = preg_replace("/  +/", " ", $countryHtml);
         $countryHtml = str_replace("\n", "", $countryHtml);
         $countryHtml = str_replace("\r", "", $countryHtml);

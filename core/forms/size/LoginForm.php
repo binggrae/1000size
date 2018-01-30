@@ -32,6 +32,7 @@ class LoginForm extends Model
             'login[mail]' => $this->login,
             'login[password]' => $this->password,
             'login[_csrf_token]' => $this->token,
+            'return_to' => 'https://opt.1000size.ru/'
         ];
     }
 }

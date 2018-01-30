@@ -20,7 +20,7 @@ class CategoriesPage
     public function getList()
     {
         $categories = [];
-        $elements = $this->pq->find('.s-menu__link_title_yes');
+        $elements = $this->pq->find('#catalog_side_menu .s-menu__link');
 
         foreach ($elements as $element)
         {

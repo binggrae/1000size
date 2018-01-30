@@ -31,17 +31,36 @@ class CategoryJob extends BaseObject implements JobInterface
     public function execute($queue)
     {
         $log = CategoryLog::start($this->log_id, $this->log_link);
-        foreach ($this->links as $link) {
-            $request = $this->client->get($link)->send();
-            if ($request->isOk) {
-                $productPage = new ProductPage($request->content);
 
-                $product = new Products(get_object_vars($productPage->getData()));
-                $product->save();
-            } else {
-                continue;
+        $links = array_chunk($this->links, 10);
+
+        foreach ($links as $chunks) {
+
+            $requests = [];
+            foreach ($chunks as $link) {
+                $requests[] = $this->client->get('https://opt.1000size.ru/' . $link);
+            }
+
+            $responses = $this->client->batch($requests);
+
+            foreach ($responses as $response) {
+                if ($response->isOk) {
+                    file_put_contents(\Yii::getAlias('@common/data/view.html'), $response->content);
+                    $productPage = new ProductPage($response->content);
+                    $data = $productPage->getData();
+
+                    var_dump($data);
+
+                    $product = new Products(get_object_vars($data));
+                    $product->save();
+
+                    die();
+                } else {
+                    continue;
+                }
             }
         }
+
         $log->end(count($this->links));
     }
 

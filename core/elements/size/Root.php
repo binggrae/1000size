@@ -12,7 +12,7 @@ class Root
 
     public function  __construct($link, $title)
     {
-        $this->link = $link;
+        $this->link = 'https://opt.1000size.ru' . $link;
         $this->title = $title;
     }
 

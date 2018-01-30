@@ -6,7 +6,7 @@ use core\elements\size\Root;
 
 class HomePage
 {
-    const URL = 'http://opt.1000size.ru/';
+    const URL = 'https://opt.1000size.ru/';
 
     private $pq;
 

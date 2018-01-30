@@ -40,6 +40,8 @@ class LoginAction
         }
         $form->token = $home->getToken();
 
+        var_dump($form->getPostData());
+
         $request = $this->client->post(AuthPage::URL, $form->getPostData())->send(); 
         if($request->isOk) {
             $home = new HomePage($request->content);

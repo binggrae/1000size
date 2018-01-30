@@ -5,6 +5,7 @@ namespace core\actions\size;
 
 use core\exceptions\RequestException;
 use core\pages\size\CategoriesPage;
+use core\pages\size\HomePage;
 use core\services\Client;
 
 class CategoriesAction
@@ -21,8 +22,7 @@ class CategoriesAction
 
     public function run()
     {
-        $request = $this->client->get(CategoriesPage::URL)->send();
-		file_put_contents(\Yii::getAlias('@common/data/t.html'), $request->content);
+        $request = $this->client->get(HomePage::URL)->send();
         if ($request->isOk) {
             $page = new CategoriesPage($request->content);
             return $page->getList();
