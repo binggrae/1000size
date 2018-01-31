@@ -20,7 +20,7 @@ class CategoryJob extends BaseObject implements JobInterface
     /**
      * @var Client
      */
-    private $client; 
+    private $client;
 
     public function __construct(Client $client, array $config = [])
     {
@@ -38,12 +38,12 @@ class CategoryJob extends BaseObject implements JobInterface
 
             $requests = [];
             foreach ($chunks as $link) {
-                $requests[] = $this->client->get('https://opt.1000size.ru/' . $link);
+                $requests[$link] = $this->client->get('https://opt.1000size.ru/' . $link);
             }
 
             $responses = $this->client->batch($requests);
 
-            foreach ($responses as $response) {
+            foreach ($responses as $link => $response) {
                 if ($response->isOk) {
                     file_put_contents(\Yii::getAlias('@common/data/view.html'), $response->content);
                     $productPage = new ProductPage($response->content);
@@ -53,6 +53,7 @@ class CategoryJob extends BaseObject implements JobInterface
                     $product->save();
 
                 } else {
+                    var_dump('Error ' . $link);
                     continue;
                 }
             }

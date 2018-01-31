@@ -55,7 +55,6 @@ class ParseJob extends BaseObject implements JobInterface
 
                 foreach ($categories as $category) {
                     $page = 1;
-
                     do {
                         $categoryPage = $this->api->getProducts($log->id, $category, $page);
                         $page++;
