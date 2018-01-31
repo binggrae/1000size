@@ -38,11 +38,11 @@ class ProductAction
             $links = $page->getLinks();
             var_dump(count($links));
 
-//            \Yii::$app->queue->push(new CategoryJob($this->client, [
-//                'links' => $links,
-//                'log_id' => $log_id,
-//                'log_link' => $url
-//            ]));
+            \Yii::$app->queue->push(new CategoryJob($this->client, [
+                'links' => $links,
+                'log_id' => $log_id,
+                'log_link' => $url
+            ]));
             return $page;
         } else {
             throw new RequestException('Failed load category: ' . $category->title);
