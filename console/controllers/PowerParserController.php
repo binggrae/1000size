@@ -45,6 +45,7 @@ class PowerParserController extends Controller
         \Yii::$app->queue->priority(2000)->push(new XlsJob());
     }
 
+
     public function actionXls()
     {
         $file = \Yii::createObject([
