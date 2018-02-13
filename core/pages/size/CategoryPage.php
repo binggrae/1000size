@@ -12,6 +12,7 @@ class CategoryPage
 
     public function __construct($html)
     {
+		file_put_contents(\Yii::getAlias('@common/data/cat_' . uniqid() . '.html'), $html);
         $this->pq = \phpQuery::newDocumentHTML($html);
     }
 
@@ -32,7 +33,6 @@ class CategoryPage
     public function hasNext()
     {
         $pages = $this->pq->find('.s-pager__link');
-        var_dump($pages->text());
         foreach ($pages as $page) {
             $pq = pq($page);
             $last = $this->pq->find('.s-pager__item_current_yes')->text();
