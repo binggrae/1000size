@@ -14,6 +14,7 @@ class ParseJob extends BaseObject implements JobInterface
     public $login;
 
     public $password;
+
     /**
      * @var Api
      */

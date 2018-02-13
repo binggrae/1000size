@@ -5,9 +5,10 @@ namespace core\pages\size;
 
 
 
-class CategoryPage
+class CategoryPage extends HomePage
 {
 
+<<<<<<< HEAD
     private $pq;
 
     public function __construct($html)
@@ -16,6 +17,8 @@ class CategoryPage
         $this->pq = \phpQuery::newDocumentHTML($html);
     }
 
+=======
+>>>>>>> 6dfdb1019e4f4f1ada30a8a922890693484051a6
     public function getLinks()
     {
         $links = [];
@@ -23,10 +26,9 @@ class CategoryPage
         foreach ($list as $item) {
             $pq = pq($item);
 
-            $links[] = $pq->find('.s-catalog-groups__link')->attr('href');
+            yield $pq->find('.s-catalog-groups__link')->attr('href');
         }
         return $links;
-
     }
 
 
@@ -37,14 +39,12 @@ class CategoryPage
             $pq = pq($page);
             $last = $this->pq->find('.s-pager__item_current_yes')->text();
             $count = strlen($last);
-
             if(
                 $pq->find('.s-link__inner')->text() == 'сюда' &&
                 substr($pq->attr('href'), -$count) != $last
             ) {
                 return true;
             }
-
         }
         return false;
     }

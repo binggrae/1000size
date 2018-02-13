@@ -26,7 +26,7 @@ class XmlJob extends BaseObject implements JobInterface
     {
         $log = XmlLog::start($this->log_id);
         try{
-            $this->products = Products::find()->all();
+            $this->products = Products::find()->where(['status' => 0])->all();
             $xml = new Xml($this->products);
             $xml->generate();
             $xml->save('@frontend/web/' . \Yii::$app->settings->get('file.xml'));

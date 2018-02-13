@@ -19,11 +19,6 @@ $this->title = 'Parser stats';
                     </td>
                 </tr>
                 <tr>
-                    <td>Task:</td>
-                    <td><?=$task;?></td>
-                </tr>
-
-                <tr>
                     <td>Date:</td>
                     <td><?=date('d.m.Y H:i:s', $date);?></td>
                 </tr>
@@ -42,10 +37,14 @@ $this->title = 'Parser stats';
             </table>
         </div>
         <div class="col-md-6">
-            <?php if(!$status && $task == 0) : ?>
+            <?php if(!$status) : ?>
                 <a class="btn btn-primary" href="<?=Url::to('/parser/start');?>">
                     Start
                 </a>
+            <?php else :?>
+                <div class="btn btn-danger disabled">
+                    running
+                </div>
             <?php endif;?>
         </div>
     </div>

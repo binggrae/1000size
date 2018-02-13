@@ -3,12 +3,14 @@
 namespace core\entities\size;
 
 use core\entities\ProductInterface;
-use Yii;
 
 /**
  * This is the model class for table "products".
  *
  * @property int $id
+ * @property int $category_id
+ * @property string $link
+ * @property int $status
  * @property string $barcode
  * @property string $title
  * @property string $unit
@@ -36,8 +38,8 @@ class Products extends \yii\db\ActiveRecord implements ProductInterface
     {
         return [
             [['barcode', 'title'], 'required'],
-            [['storageM', 'storageV', 'purchase', 'retail'], 'integer'],
-            [['barcode', 'title', 'unit', 'brand', 'country'], 'string', 'max' => 255],
+            [['storageM', 'storageV', 'purchase', 'retail', 'category_id', 'status'], 'integer'],
+            [['link', 'barcode', 'title', 'unit', 'brand', 'country'], 'string', 'max' => 255],
         ];
     }
 

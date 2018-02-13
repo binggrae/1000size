@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use core\entities\power\Products;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
@@ -15,19 +16,35 @@ $this->title = 'Power Parser stats';
             <table class="table">
                 <tr>
                     <td>Ожидают:</td>
-                    <td><?= $imported; ?></td>
+                    <td>
+                        <a href="<?= Url::to(['/power-parser/list', 'status' => Products::STATUS_NEW]); ?>">
+                            <?= $imported; ?>
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <td>В работе:</td>
-                    <td><?= $job; ?></td>
+                    <td>
+                        <a href="<?= Url::to(['/power-parser/list', 'status' => Products::STATUS_IN_JOB]); ?>">
+                            <?= $job; ?>
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Загружено:</td>
-                    <td><?= $loaded; ?></td>
+                    <td>
+                        <a href="<?= Url::to(['/power-parser/list', 'status' => Products::STATUS_LOADED]); ?>">
+                            <?= $loaded; ?>
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Удалено:</td>
-                    <td><?= $removed; ?></td>
+                    <td>
+                        <a href="<?= Url::to(['/power-parser/list', 'status' => Products::STATUS_REMOVED]); ?>">
+                            <?= $removed; ?>
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Xml:</td>

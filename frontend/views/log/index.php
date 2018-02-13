@@ -13,7 +13,6 @@ use yii\helpers\VarDumper;
 $this->title = 'Log list';
 ?>
 <div class="log-index">
-
     <table class="table">
         <thead></thead>
         <tr>
@@ -46,5 +45,4 @@ $this->title = 'Log list';
         <?php endforeach; ?>
         </tbody>
     </table>
-
 </div>

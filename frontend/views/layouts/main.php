@@ -38,8 +38,9 @@ AppAsset::register($this);
     $menuItems = [
         ['label' => 'Settings', 'url' => ['/settings']],
         ['label' => 'Stats', 'url' => ['/parser/stats']],
+        ['label' => '1000size', 'url' => ['/size-parser/categories']],
         ['label' => 'Powergroup', 'url' => ['/power-parser/index']],
-        ['label' => 'Logs', 'url' => ['/log']],
+        ['label' => 'Technomarin', 'url' => ['/techno/index']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
