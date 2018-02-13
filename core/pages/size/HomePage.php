@@ -2,22 +2,24 @@
 
 namespace core\pages\size;
 
-use core\elements\size\Root;
+use yii\helpers\Json;
 
 class HomePage
 {
     const URL = 'https://opt.1000size.ru/';
 
-    private $pq;
+    protected $pq;
 
     public function __construct($html)
     {
         $this->pq = \phpQuery::newDocumentHTML($html);
+//        file_put_contents(\Yii::getAlias('@common/data/all_'.uniqid().'.html'), $this->pq->html());
     }
 
 
     public function isLogin()
     {
+//        var_dump($this->pq->find('#auth_login_form')->html());
         return !$this->pq->find('#auth_login_form')->count();
     }
 
@@ -25,21 +27,4 @@ class HomePage
     {
         return $this->pq->find('#login__csrf_token')->attr('value');
     }
-
-    /**
-     * @return Root[]
-     */
-    public function getRoots()
-    {
-        $roots = [];
-        $elements = $this->pq->find('.s-catalog-groups__link');
-
-        foreach ($elements as $element) {
-            $root = pq($element);
-            $roots[] = new Root($root->attr('href'), trim($root->text()));
-        }
-
-        return $roots;
-    }
-
 }

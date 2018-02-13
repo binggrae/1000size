@@ -3,32 +3,40 @@
 
 namespace core\pages\size;
 
+use yii\helpers\VarDumper;
 
-use core\elements\size\Root;
-
-class CategoriesPage
+class CategoriesPage extends HomePage
 {
-    const URL = 'http://opt.1000size.ru/categories';
-
-    private $pq;
 
     public function __construct($html)
     {
-        $this->pq = \phpQuery::newDocumentHTML($html);
+        preg_match('/id="full_categories_popup_tpl">(.+)s-catalog-overlay__empty-button/usi', $html, $math);
+        parent::__construct($math[1]);
     }
 
-    public function getList()
+    public function getCategories()
     {
-        $categories = [];
-        $elements = $this->pq->find('#catalog_side_menu .s-menu__link');
+        $data = ['items' => []];
+        foreach ($this->pq->find('li') as $item) {
+            $pqItem = pq($item);
+            $id = preg_replace('/cat_\w_/', '', $pqItem->attr('id'));
+            $ids = explode('_', $id);
+            $parent = &$data['items'];
 
-        foreach ($elements as $element)
-        {
-            $pq = pq($element);
-            $categories[] = new Root($pq->attr('href'), trim($pq->text()));
+            foreach ($ids as $index => $key) {
+                if (!isset($parent[$key])) {
+                    $pqLink = $pqItem->find('a:eq(0)');
+                    $parent[$key] = [
+                        'items' => [],
+                        'id' => $id,
+                        'link' => $pqLink->attr('href'),
+                        'title' => $pqLink->text(),
+                    ];
+                }
+                $parent = &$parent[$key]['items'];
+            }
         }
-
-        return $categories;
+        return $data;
     }
 
 }

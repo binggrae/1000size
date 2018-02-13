@@ -5,7 +5,7 @@ namespace core\actions\size;
 
 use core\elements\size\Root;
 use core\exceptions\RequestException;
-use core\jobs\size\CategoryJob;
+use core\jobs\size\ProductJob;
 use core\pages\size\CategoryPage;
 use core\services\Client;
 
@@ -38,7 +38,7 @@ class ProductAction
             $links = $page->getLinks();
             var_dump(count($links));
 
-            \Yii::$app->queue->push(new CategoryJob($this->client, [
+            \Yii::$app->queue->push(new ProductJob($this->client, [
                 'links' => $links,
                 'log_id' => $log_id,
                 'log_link' => $url

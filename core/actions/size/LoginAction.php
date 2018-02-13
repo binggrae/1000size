@@ -23,12 +23,14 @@ class LoginAction
         $this->client = $client;
     }
 
-    /**
-     * @param LoginForm $form
-     * @return bool
-     */
-    public function run($form)
+    public function run()
     {
+        var_dump('login');
+        $form = new LoginForm([
+            'login' => \Yii::$app->settings->get('parser.login'),
+            'password' => \Yii::$app->settings->get('parser.password'),
+        ]);
+
         $request = $this->client->get(HomePage::URL)->send();
         if($request->isOk) {
             $home = new HomePage($request->content);
@@ -39,8 +41,6 @@ class LoginAction
             throw new RequestException('Failed load login page');
         }
         $form->token = $home->getToken();
-
-        var_dump($form->getPostData());
 
         $request = $this->client->post(AuthPage::URL, $form->getPostData())->send(); 
         if($request->isOk) {

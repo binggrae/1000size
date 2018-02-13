@@ -23,7 +23,6 @@ class ProductJob extends BaseObject implements JobInterface
     public function __construct(array $config = [])
     {
         parent::__construct($config);
-        $this->client = \Yii::$container->get(Client::class);
     }
 
     /**
@@ -32,6 +31,8 @@ class ProductJob extends BaseObject implements JobInterface
      */
     public function execute($queue)
     {
+        $this->client = \Yii::$container->get(Client::class);
+
         $requests = [];
         foreach ($this->requests as $id => $barcode) {
             $requests[$id] = $this->client->post(ProductPage::URL, [

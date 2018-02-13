@@ -50,7 +50,14 @@ class PowerParserController extends Controller
             'job' => $job,
             'model' => $model
         ]);
+    }
 
+    public function actionList($status)
+    {
+        $products = Products::find()->where([ 'status' => $status])->all();
+        return $this->render('view', [
+            'products' => $products
+        ]);
     }
 
     public function actionLoad()

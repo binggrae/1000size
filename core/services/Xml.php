@@ -9,12 +9,19 @@ use core\entities\ProductInterface;
 class Xml
 {
 
+    protected $date = [];
+
     private $products;
 
     private $xml;
 
+    /**
+     * Xml constructor.
+     * @param ProductInterface[] $products
+     */
     public function __construct($products)
     {
+        $this->date['ДатаСоздания'] = date('n/d/Y H:i:s A', time());
         $this->products = $products;
         $this->xml = new \domDocument("1.0", "utf-8");
     }
@@ -117,7 +124,6 @@ class Xml
         $brand = str_replace('&', ' ', $brand);
 
         return $this->xml->createElement('Производитель', $brand);
-
     }
 
     private function generateCountry($country)
@@ -128,7 +134,9 @@ class Xml
     private function generateRoot()
     {
         $root = $this->xml->createElement('ЦеныИОстатки');
-        $root->setAttribute('ДатаСоздания', date('n/d/Y H:i:s A', time()));
+        foreach ($this->date as $key => $value) {
+            $root->setAttribute($key, $value);
+        }
 
         $this->xml->appendChild($root);
 

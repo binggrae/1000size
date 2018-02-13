@@ -27,7 +27,7 @@ class XlsJob extends BaseObject implements JobInterface
                 'sheets' => [
                     'ЦеныИОстатки' => [
                         'class' => 'codemix\excelexport\ActiveExcelSheet',
-                        'query' => Products::find(),
+                        'query' => Products::find()->where(['status' => 0]),
                         'attributes' => ['barcode', 'title', 'unit', 'storageM', 'storageV', 'purchase', 'retail', 'brand', 'country'],
                     ]
                 ]

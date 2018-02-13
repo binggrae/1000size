@@ -6,19 +6,13 @@ namespace core\pages\size;
 
 use core\elements\size\Product;
 
-class ProductPage
+class ProductPage extends HomePage
 {
 
-    private $pq;
 
     private $storageHtml;
 
     private $unit;
-
-    public function __construct($html)
-    {
-        $this->pq = \phpQuery::newDocumentHTML($html);
-    }
 
     public function getData()
     {
