@@ -1,7 +1,7 @@
 <?php
 
 
-namespace core\entities\prov1;
+namespace core\entities\automaster;
 
 
 use core\entities\ProductInterface;

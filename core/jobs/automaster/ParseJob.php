@@ -1,19 +1,21 @@
 <?php
 
 
-namespace console\controllers;
+namespace core\jobs\automaster;
 
 
-use core\entities\prov1\Product;
+
+use core\entities\automaster\Product;
 use core\services\Xml;
-use yii\console\Controller;
+use yii\base\BaseObject;
+use yii\queue\JobInterface;
 
-class ProvController extends Controller
+class ParseJob extends BaseObject implements JobInterface
 {
 
-    public function actionRun()
+    public function execute($queue)
     {
-        $name = \Yii::$app->settings->get('prov1.name');
+        $name = \Yii::$app->settings->get('automaster.name');
         $archive = \Yii::getAlias('@ftp/prov1/' . $name . '.zip');
         $runtime = \Yii::getAlias('@runtime/ftp/');
 
@@ -40,7 +42,9 @@ class ProvController extends Controller
 
             $xmlService = new Xml($products);
             $xmlService->generate();
-            $xmlService->save('@frontend/web/' . \Yii::$app->settings->get('prov1.xml'));
+            $xmlService->save('@frontend/web/' . \Yii::$app->settings->get('automaster.xml'));
+
+            \Yii::$app->settings->set('automaster.date', time());
         }
     }
 

@@ -8,8 +8,8 @@ use core\entities\power\Products;
 use core\forms\power\LoadForm;
 use core\jobs\power\ParseJob;
 use core\services\power\Importer;
-use yii\web\Controller;
 use yii\filters\AccessControl;
+use yii\web\Controller;
 use yii\web\UploadedFile;
 
 class PowerParserController extends Controller
@@ -34,27 +34,9 @@ class PowerParserController extends Controller
     }
 
 
-    public function actionIndex()
-    {
-        $imported = Products::find()->where(['status' => Products::STATUS_NEW])->count();
-        $loaded = Products::find()->where(['status' => Products::STATUS_LOADED])->count();
-        $removed = Products::find()->where(['status' => Products::STATUS_REMOVED])->count();
-        $job = Products::find()->where(['status' => Products::STATUS_IN_JOB])->count();
-
-        $model = new LoadForm();
-
-        return $this->render('index', [
-            'imported' => $imported,
-            'loaded' => $loaded,
-            'removed' => $removed,
-            'job' => $job,
-            'model' => $model
-        ]);
-    }
-
     public function actionList($status)
     {
-        $products = Products::find()->where([ 'status' => $status])->all();
+        $products = Products::find()->where(['status' => $status])->all();
         return $this->render('view', [
             'products' => $products
         ]);
@@ -64,10 +46,10 @@ class PowerParserController extends Controller
     {
         $model = new LoadForm();
 
-        if(\Yii::$app->request->isPost) {
+        if (\Yii::$app->request->isPost) {
             $model->file = UploadedFile::getInstance($model, 'file');
 
-            try{
+            try {
                 $importer = new Importer($model->file->tempName);
                 $importer->import();
 
@@ -91,7 +73,7 @@ class PowerParserController extends Controller
 
         sleep(5);
 
-        return $this->redirect('index');
+        return $this->redirect('dashboard/index');
     }
 
 

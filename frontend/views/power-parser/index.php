@@ -65,7 +65,6 @@ $this->title = 'Power Parser stats';
                 <div class="btn btn-success disabled">
                     В работе
                 </div>
-
             <?php else : ?>
                 <a class="btn btn-primary" href="<?= Url::to('/power-parser/start'); ?>">
                     Запустить

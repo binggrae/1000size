@@ -3,10 +3,10 @@
 
 namespace console\controllers;
 
-use core\jobs\techno\ParseJob;
+use core\jobs\automaster\ParseJob;
 use yii\console\Controller;
 
-class TechnoController extends Controller
+class AutomasterController extends Controller
 {
 
     public function actionRun()

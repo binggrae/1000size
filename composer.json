@@ -25,7 +25,8 @@
         "yii2tech/crontab": "^1.0",
         "yiisoft/yii2-queue": "^2.0",
         "arogachev/yii2-excel": "^0.1.1",
-        "codemix/yii2-excelexport": "^2.5"
+        "codemix/yii2-excelexport": "^2.5",
+        "dmstr/yii2-adminlte-asset": "^2.6"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

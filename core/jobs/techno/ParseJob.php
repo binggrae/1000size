@@ -15,11 +15,6 @@ use yii\queue\JobInterface;
 class ParseJob extends BaseObject implements JobInterface
 {
 
-    /**
-     * @var Api
-     */
-    private $api;
-
 
     /**
      * @param \yii\queue\Queue $queue

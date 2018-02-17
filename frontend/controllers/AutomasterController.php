@@ -1,12 +1,14 @@
 <?php
 
+
 namespace frontend\controllers;
 
-use core\jobs\techno\ParseJob;
+
+use core\jobs\automaster\ParseJob;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
-class TechnoController extends Controller
+class AutomasterController extends Controller
 {
 
     public function behaviors()
@@ -31,5 +33,8 @@ class TechnoController extends Controller
         sleep(5);
 
         return $this->redirect('/dashboard/index');
+
     }
+
+
 }
