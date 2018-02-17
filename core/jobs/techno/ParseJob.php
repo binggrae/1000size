@@ -49,8 +49,8 @@ class ParseJob extends BaseObject implements JobInterface
                     (string)$item->{'Артикул'},
                     (string)$item->{'ЕдИзм'},
                     (string)$item->{'Остаток'},
-                    str_replace(' ', '', (string)$item->{'ЦенаРозничная'}),
-                    str_replace(' ', '', (string)$item->{'ЦенаДилерская'})
+                    str_replace(' ', '', (string)$item->{'ЦенаДилерская'}),
+                    str_replace(' ', '', (string)$item->{'ЦенаРозничная'})
                 );
                 $products[] = $product;
             }

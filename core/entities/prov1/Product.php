@@ -1,7 +1,7 @@
 <?php
 
 
-namespace core\entities\techno;
+namespace core\entities\prov1;
 
 
 use core\entities\ProductInterface;
@@ -9,24 +9,27 @@ use core\entities\ProductInterface;
 class Product implements ProductInterface
 {
     private $barcode;
+    private $title;
     private $unit;
     private $storage;
     private $purchase;
-    private $retail;
+    private $brand;
 
     public function __construct(
         $barcode,
+        $title,
         $unit,
         $storage,
         $purchase,
-        $retail
+        $brand
     )
     {
         $this->barcode = $barcode;
+        $this->title = $title;
         $this->unit = $unit;
         $this->storage = $storage;
         $this->purchase = $purchase;
-        $this->retail = $retail;
+        $this->brand = $brand;
     }
 
     public function getBarcodeVal()
@@ -36,7 +39,7 @@ class Product implements ProductInterface
 
     public function getTitleVal()
     {
-        return '';
+        return $this->title;
     }
 
     public function getUnitVal()
@@ -61,12 +64,17 @@ class Product implements ProductInterface
 
     public function getRetailVal()
     {
-        return $this->retail;
+        try {
+            return round($this->purchase * 1.3, 2);
+        } catch (\Exception $e) {
+            var_dump($this->purchase);
+            throw $e;
+        }
     }
 
     public function getBrandVal()
     {
-        return null;
+        return $this->brand;
     }
 
     public function getCountryVal()
