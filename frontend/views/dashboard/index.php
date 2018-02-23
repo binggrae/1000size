@@ -27,12 +27,12 @@ $this->title = 'Панель управления';
                             'title' => 'Статистика'
                         ]) ?>
                         <?php if (!$size['status']) : ?>
-                            <?= Html::a('<i class="fa fa-play text-green"></i>', ['/parser/start'], [
+                            <?= Html::a('<i class="fa fa-play text-green"></i>', ['/size-parser/start'], [
                                 'class' => 'btn btn-default btn-sm',
                                 'title' => 'Запустить'
                             ]) ?>
                         <?php else : ?>
-                            <?= Html::a('<i class="fa fa-stop"></i>', ['/parser/start'], [
+                            <?= Html::a('<i class="fa fa-stop"></i>', ['/size-parser/start'], [
                                 'class' => 'btn btn-danger btn-sm disabled',
                                 'title' => 'В работе'
                             ]) ?>
