@@ -58,7 +58,7 @@ class SizeParserController extends Controller
             \Yii::$app->queue->push(new ParseJob());
         }
 
-        return $this->redirect('dashboard/index');
+        return $this->redirect('/dashboard/index');
     }
 
 
