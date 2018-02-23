@@ -8,17 +8,7 @@ namespace core\pages\size;
 class CategoryPage extends HomePage
 {
 
-<<<<<<< HEAD
-    private $pq;
 
-    public function __construct($html)
-    {
-		file_put_contents(\Yii::getAlias('@common/data/cat_' . uniqid() . '.html'), $html);
-        $this->pq = \phpQuery::newDocumentHTML($html);
-    }
-
-=======
->>>>>>> 6dfdb1019e4f4f1ada30a8a922890693484051a6
     public function getLinks()
     {
         $links = [];
