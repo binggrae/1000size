@@ -31,7 +31,7 @@ class DashboardController extends Controller
     {
         $size = [
             'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('parser.date')),
-            'count' => SizeProducts::find()->count(),
+            'count' => SizeProducts::find()->where(['status' => 0])->count(),
             'status' => \Yii::$app->settings->get('parser.is_job'),
             'xml' => \Yii::$app->settings->get('file.xml'),
             'xls' => \Yii::$app->settings->get('file.xls'),
