@@ -4,14 +4,13 @@
 namespace core\actions\size;
 
 
-
 use core\exceptions\RequestException;
 use core\forms\size\LoginForm;
 use core\pages\size\AuthPage;
 use core\pages\size\HomePage;
 use core\services\Client;
 
-class LoginAction  
+class LoginAction
 {
     /**
      * @var Client
@@ -31,26 +30,36 @@ class LoginAction
             'password' => \Yii::$app->settings->get('parser.password'),
         ]);
 
-        $request = $this->client->get(HomePage::URL)->send();
-        if($request->isOk) {
-            $home = new HomePage($request->content);
-            if($home->isLogin()) {
-                return true;
+        do {
+            $request = $this->client->get(HomePage::URL)->send();
+            if ($request->isOk) {
+                $home = new HomePage($request->content);
+                if ($home->isLogin()) {
+                    return true;
+                }
+            } elseif($request->getStatusCode() == 429) {
+                var_dump('SLEEP');
+                sleep(10);
+                continue;
+            } else {
+                throw new RequestException('Failed load login page');
             }
-        } else {
-            var_dump($request->headers);
-            throw new RequestException('Failed load login page');
-        }
-        $form->token = $home->getToken();
+            $form->token = $home->getToken();
 
-        $request = $this->client->post(AuthPage::URL, $form->getPostData())->send(); 
-        if($request->isOk) {
-            $home = new HomePage($request->content);
+            $request = $this->client->post(AuthPage::URL, $form->getPostData())->send();
+            if ($request->isOk) {
+                $home = new HomePage($request->content);
 
-            return $home->isLogin();
-        } else {
-            throw new RequestException('Failed auth');
-        }
+                return $home->isLogin();
+            }  elseif($request->getStatusCode() == 429) {
+                var_dump('SLEEP');
+                sleep(10);
+                continue;
+            }else {
+                throw new RequestException('Failed auth');
+            }
+        } while (1);
+
     }
 
 }
