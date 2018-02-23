@@ -38,6 +38,7 @@ class LoginAction
                 return true;
             }
         } else {
+            var_dump($request->headers);
             throw new RequestException('Failed load login page');
         }
         $form->token = $home->getToken();
