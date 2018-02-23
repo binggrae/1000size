@@ -35,6 +35,7 @@ class ProductJob extends BaseObject implements JobInterface
     public function execute($queue)
     {
         $this->client = \Yii::$container->get(Client::class);
+        var_dump($this->ids);
 
         $products = Products::find()->indexBy('id')->where(['id' => $this->ids])->all();
 
@@ -48,7 +49,6 @@ class ProductJob extends BaseObject implements JobInterface
             foreach ($products as $product) {
                 $requests[$product->id] = $this->client->get('https://opt.1000size.ru/' . $product->link);
             }
-
             $responses = $this->client->batch($requests);
 
             foreach ($responses as $id => $response) {
