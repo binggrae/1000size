@@ -37,7 +37,7 @@ class LoginAction
                 if ($home->isLogin()) {
                     return true;
                 }
-            } elseif($request->getStatusCode() == 429) {
+            } elseif ($request->getStatusCode() == 429) {
                 var_dump('SLEEP');
                 sleep(10);
                 continue;
@@ -51,11 +51,11 @@ class LoginAction
                 $home = new HomePage($request->content);
 
                 return $home->isLogin();
-            }  elseif($request->getStatusCode() == 429) {
+            } elseif ($request->getStatusCode() == 429) {
                 var_dump('SLEEP');
                 sleep(10);
                 continue;
-            }else {
+            } else {
                 throw new RequestException('Failed auth');
             }
         } while (1);
