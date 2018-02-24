@@ -37,7 +37,6 @@ class ProductJob extends BaseObject implements JobInterface
     public function execute($queue)
     {
         $this->client = \Yii::$container->get(Client::class);
-        var_dump($this->ids);
         $products = Products::find()->indexBy('id')->where(['id' => $this->ids])->all();
         $chunks = array_chunk(ArrayHelper::map($products, 'id' , 'link'), 2, true);
 
@@ -73,7 +72,6 @@ class ProductJob extends BaseObject implements JobInterface
 
                     unset($products[$id]);
                 }
-                var_dump('sleep');
                 sleep(1);
             }
         } while (count($products));
