@@ -9,6 +9,7 @@ use core\pages\size\ProductPage;
 use core\services\Client;
 use core\services\size\Api;
 use yii\base\BaseObject;
+use yii\helpers\ArrayHelper;
 use yii\httpclient\Response;
 use yii\queue\JobInterface;
 
@@ -38,41 +39,43 @@ class ProductJob extends BaseObject implements JobInterface
         $this->client = \Yii::$container->get(Client::class);
         var_dump($this->ids);
         $products = Products::find()->indexBy('id')->where(['id' => $this->ids])->all();
+        $chunks = array_chunk(ArrayHelper::map($products, 'id' , 'link'), 2, true);
 
         $is_load = true;
         do {
-            sleep(5);
             if(!$is_load) {
                 $this->getApi()->login();
             }
 
-            $requests = [];
-            foreach ($products as $product) {
-                $requests[$product->id] = $this->client->get('https://opt.1000size.ru/' . $product->link);
-            }
-            /** @var Response[] $responses */
-            $responses = $this->client->batch($requests);
-
-            foreach ($responses as $id => $response) {
-                if ($response->getStatusCode() == 429) {
-                    var_dump('SLEEP');
-                    continue;
+            foreach ($chunks as $chunk) {
+                $requests = [];
+                foreach ($chunk as $id => $link) {
+                    var_dump($link);
+                    $requests[$id] = $this->client->get('https://opt.1000size.ru/' . $link);
                 }
+                /** @var Response[] $responses */
+                $responses = $this->client->batch($requests);
 
-                $productPage = new ProductPage($response->content);
-                if (!$productPage->isLogin()) {
-                    $is_load = false;
-                    continue;
+                foreach ($responses as $id => $response) {
+                    if ($response->getStatusCode() == 429) {
+                        var_dump('SLEEP');
+                        continue;
+                    }
+
+                    $productPage = new ProductPage($response->content);
+                    if (!$productPage->isLogin()) {
+                        $is_load = false;
+                        continue;
+                    }
+
+                    $products[$id]->setAttributes(get_object_vars($productPage->getData()));
+                    $products[$id]->save();
+
+                    unset($products[$id]);
                 }
-
-                $products[$id]->setAttributes(get_object_vars($productPage->getData()));
-                $products[$id]->save();
-
-                unset($products[$id]);
+                var_dump('sleep');
+                sleep(1);
             }
-
         } while (count($products));
     }
-
-
 }

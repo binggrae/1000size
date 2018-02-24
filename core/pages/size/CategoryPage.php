@@ -9,16 +9,13 @@ class CategoryPage extends HomePage
 {
 
 
-<<<<<<< HEAD
-=======
     public function __construct($html)
     {
-		file_put_contents(\Yii::getAlias('@common/data/cat_' . uniqid() . '.html'), $html);
+		//file_put_contents(\Yii::getAlias('@common/data/cat_' . uniqid() . '.html'), $html);
         parent::__construct($html);
     }
 
 
->>>>>>> 10e9a5ae283800a4ebe85f84cf37a03864ef6f8f
     public function getLinks()
     {
         $links = [];
