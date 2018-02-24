@@ -64,7 +64,6 @@ class ProductJob extends BaseObject implements JobInterface
                     $productPage = new ProductPage($response->content);
                     if (!$productPage->isLogin()) {
                         $is_load = false;
-                        var_dump($products[$id]);
                         continue;
                     }
 
