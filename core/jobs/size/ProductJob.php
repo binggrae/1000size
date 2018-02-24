@@ -46,7 +46,7 @@ class ProductJob extends BaseObject implements JobInterface
                 $this->getApi()->login();
             }
 
-            foreach ($chunks as $chunk) {
+            foreach ($chunks as $i => $chunk) {
                 $requests = [];
                 foreach ($chunk as $id => $link) {
                     $requests[$id] = $this->client->get('https://opt.1000size.ru/' . $link);
@@ -63,21 +63,21 @@ class ProductJob extends BaseObject implements JobInterface
 
                     $productPage = new ProductPage($response->content);
                     if (!$productPage->isLogin()) {
-                        var_dump($productPage->getData());
                         $is_load = false;
+                        var_dump($products[$id]);
                         continue;
                     }
 
-                    try {
-                        $products[$id]->setAttributes(get_object_vars($productPage->getData()));
-                        $products[$id]->save();
+                    if($products[$id]) {
+                        try {
+                            $products[$id]->setAttributes(get_object_vars($productPage->getData()));
+                            $products[$id]->save();
 
-                        unset($products[$id]);
-                    } catch (\Exception $e) {
-                        var_dump($productPage->getData());
+                            unset($products[$id]);
+                        } catch (\Exception $e) {
+                            var_dump($productPage->getData());
+                        }
                     }
-
-
                 }
                 sleep(1);
             }
