@@ -38,11 +38,11 @@ class ProductJob extends BaseObject implements JobInterface
     {
         $this->client = \Yii::$container->get(Client::class);
         $products = Products::find()->indexBy('id')->where(['id' => $this->ids])->all();
-        $chunks = array_chunk(ArrayHelper::map($products, 'id' , 'link'), 2, true);
+        $chunks = array_chunk(ArrayHelper::map($products, 'id', 'link'), 2, true);
 
         $is_load = true;
         do {
-            if(!$is_load) {
+            if (!$is_load) {
                 $this->getApi()->login();
             }
 
@@ -67,12 +67,16 @@ class ProductJob extends BaseObject implements JobInterface
                         continue;
                     }
 
-                    if(!is_null(get_object_vars($productPage->getData()))) {
+                    try {
                         $products[$id]->setAttributes(get_object_vars($productPage->getData()));
                         $products[$id]->save();
 
                         unset($products[$id]);
+                    } catch (\Exception $e) {
+                        var_dump($productPage->getData());
                     }
+
+
                 }
                 sleep(1);
             }
