@@ -68,8 +68,6 @@ class SetUp implements BootstrapInterface
             }
 
             if ($event->job instanceof SizeProductJob) {
-                Task::deleteAll(['pid' => $event->id]);
-
                 if (Task::find()->count() == 0) {
                     $this->parse();
                 }
