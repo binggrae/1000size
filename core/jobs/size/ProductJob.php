@@ -67,10 +67,12 @@ class ProductJob extends BaseObject implements JobInterface
                         continue;
                     }
 
-                    $products[$id]->setAttributes(get_object_vars($productPage->getData()));
-                    $products[$id]->save();
+                    if(get_object_vars($productPage->getData())) {
+                        $products[$id]->setAttributes(get_object_vars($productPage->getData()));
+                        $products[$id]->save();
 
-                    unset($products[$id]);
+                        unset($products[$id]);
+                    }
                 }
                 sleep(1);
             }
