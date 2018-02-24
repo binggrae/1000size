@@ -49,13 +49,13 @@ class ProductJob extends BaseObject implements JobInterface
             foreach ($chunks as $chunk) {
                 $requests = [];
                 foreach ($chunk as $id => $link) {
-                    var_dump($link);
                     $requests[$id] = $this->client->get('https://opt.1000size.ru/' . $link);
                 }
                 /** @var Response[] $responses */
                 $responses = $this->client->batch($requests);
 
                 foreach ($responses as $id => $response) {
+                    var_dump($chunk[$id] . ': ' . $response->getStatusCode());
                     if ($response->getStatusCode() == 429) {
                         var_dump('SLEEP');
                         continue;
