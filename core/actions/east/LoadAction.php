@@ -45,6 +45,7 @@ class LoadAction
             $responses = $this->client->batch($requests);
 
             foreach ($responses as $id => $response) {
+                var_dump($id);
                 if($response->isOk) {
                     $page = new ProductPage($list[$id], $response->content);
                     $data = $page->getData();
