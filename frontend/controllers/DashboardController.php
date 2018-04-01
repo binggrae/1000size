@@ -52,6 +52,8 @@ class DashboardController extends Controller
             'xml' => \Yii::$app->settings->get('techno.xml'),
         ];
         $east = [
+            'error' => \Yii::$app->settings->get('eastmarine.error'),
+            'count' => \Yii::$app->settings->get('count', 'eastmarine', 0),
             'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('eastmarine.date')),
             'xml' => \Yii::$app->settings->get('eastmarine.xml'),
         ];

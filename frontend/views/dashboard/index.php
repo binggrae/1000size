@@ -219,6 +219,12 @@ $this->title = 'Панель управления';
                                     <a href="/<?= $east['xml']; ?>" target="_blank"><?= $east['xml']; ?></a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>Ошибки:</td>
+                                <td>
+                                    <a href="/<?= $east['error']; ?>" target="_blank"><?= $east['count']; ?></a>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
