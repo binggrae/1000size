@@ -28,7 +28,7 @@ class LoadAction
 
     public function run()
     {
-        $xmlImporter = new XmlImport('http://west-marine.ru/acrit.exportpro/eastmarine.xml');
+        $xmlImporter = new XmlImport(\Yii::$app->settings->get('eastmarine.list'));
         $list = $xmlImporter->getList();
         $chunks = array_chunk($list, 5, true);
 
