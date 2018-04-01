@@ -7,6 +7,7 @@ namespace core\jobs\automaster;
 
 use core\entities\automaster\Product;
 use core\services\Xml;
+use core\services\XmlImport;
 use yii\base\BaseObject;
 use yii\queue\JobInterface;
 
@@ -15,6 +16,9 @@ class ParseJob extends BaseObject implements JobInterface
 
     public function execute($queue)
     {
+        $xml = new XmlImport(\Yii::$app->settings->get('automaster.list'));
+        $list = array_flip($xml->getList());
+
         $name = \Yii::$app->settings->get('automaster.name');
         $archive = \Yii::getAlias('@ftp/prov1/' . $name . '.zip');
         $runtime = \Yii::getAlias('@runtime/ftp/');
@@ -29,14 +33,17 @@ class ParseJob extends BaseObject implements JobInterface
         if ($zip->open($runtime . $name . '.xlsx') == true) {
             $products = [];
             foreach ($this->getData($zip) as $data) {
-                $products[] = new Product(
-                    $data['B'],
-                    $data['C'],
-                    $data['H'],
-                    $data['G'],
-                    $data['F'],
-                    $data['A']
-                );
+                if(isset($list[$data['B']])) {
+                    $products[] = new Product(
+                        $data['B'],
+                        $data['C'],
+                        $data['H'],
+                        $data['G'],
+                        $data['F'],
+                        $data['A']
+                    );
+                }
+
             }
             $zip->close();
 

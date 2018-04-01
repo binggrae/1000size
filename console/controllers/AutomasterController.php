@@ -18,7 +18,6 @@ class AutomasterController extends Controller
         $xml = new XmlImport(\Yii::$app->settings->get('automaster.list'));
         $list = array_flip($xml->getList());
 
-
         $name = \Yii::$app->settings->get('automaster.name');
         $archive = \Yii::getAlias('@ftp/prov1/' . $name . '.zip');
         $runtime = \Yii::getAlias('@runtime/ftp/');
