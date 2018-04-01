@@ -78,7 +78,7 @@ class ProductJob extends BaseObject implements JobInterface
                         }
                     }
                 }
-                sleep(1);
+                sleep(60);
             }
         } while (count($products));
     }

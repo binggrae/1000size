@@ -13,7 +13,7 @@ use core\services\Client;
 class LoginAction
 {
     /**
-     * @var Client
+     * @var Client 
      */
     private $client;
 
@@ -38,7 +38,8 @@ class LoginAction
                     return true;
                 }
             } elseif ($request->getStatusCode() == 429) {
-                var_dump('SLEEP');
+                var_dump( $request->getHeaders()); 
+                var_dump('SLEEP ');
                 sleep(10);
                 continue;
             } else {
@@ -52,7 +53,7 @@ class LoginAction
 
                 return $home->isLogin();
             } elseif ($request->getStatusCode() == 429) {
-                var_dump('SLEEP');
+                var_dump('SLEEP ' . $request->getStatusCode());
                 sleep(10);
                 continue;
             } else {
