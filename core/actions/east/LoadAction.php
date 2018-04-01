@@ -9,6 +9,7 @@ use core\pages\east\ProductPage;
 use core\services\Client;
 use core\services\Xml;
 use core\services\XmlImport;
+use yii\helpers\VarDumper;
 use yii\httpclient\Response;
 
 class LoadAction
@@ -31,6 +32,7 @@ class LoadAction
         $xmlImporter = new XmlImport(\Yii::$app->settings->get('eastmarine.list'));
         $list = $xmlImporter->getList();
         $chunks = array_chunk($list, 5, true);
+        $errors = [];
 
         foreach ($chunks as $chunk) {
             $requests = [];
@@ -48,6 +50,8 @@ class LoadAction
                     $data = $page->getData();
                     if($data) {
                         $this->products[] = $data;
+                    } else {
+                        $errors[] = $list[$id];
                     }
                     $page->close();
                 } else {
@@ -64,7 +68,9 @@ class LoadAction
         $xmlService->generate();
         $xmlService->save('@frontend/web/' . \Yii::$app->settings->get('eastmarine.xml'));
 
+        file_put_contents('@frontend/web/' . \Yii::$app->settings->get('eastmarine.error'), VarDumper::dumpAsString($errors));
         \Yii::$app->settings->set('automaster.date', time());
+        \Yii::$app->settings->set('automaster.error_count', count($errors));
 
         return true;
     }
