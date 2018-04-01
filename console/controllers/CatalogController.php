@@ -7,6 +7,7 @@ namespace console\controllers;
 use core\services\plans\ArCatalog;
 use core\services\plans\Catalog;
 use core\services\plans\MomCatalog;
+use core\services\plans\PastelCatalog;
 use yii\console\Controller;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
@@ -26,18 +27,29 @@ class CatalogController extends Controller
      * @var ArCatalog
      */
     private $arCatalog;
+    /**
+     * @var PastelCatalog
+     */
+    private $pastelCatalog;
 
     public function __construct(
         $id, $module,
         Catalog $catalog,
         MomCatalog $momCatalog,
         ArCatalog $arCatalog,
+        PastelCatalog $pastelCatalog,
         array $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->catalog = $catalog;
         $this->mamCatalog = $momCatalog;
         $this->arCatalog = $arCatalog;
+        $this->pastelCatalog = $pastelCatalog;
+    }
+
+    public function actionParsePastel()
+    {
+        $this->pastelCatalog->parse();
     }
 
     public function actionParse()

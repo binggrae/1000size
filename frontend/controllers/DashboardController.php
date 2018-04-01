@@ -51,6 +51,10 @@ class DashboardController extends Controller
             'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('techno.date')),
             'xml' => \Yii::$app->settings->get('techno.xml'),
         ];
+        $east = [
+            'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('eastmarine.date')),
+            'xml' => \Yii::$app->settings->get('eastmarine.xml'),
+        ];
 
         $automaster = [
             'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('automaster.date')),
@@ -61,6 +65,7 @@ class DashboardController extends Controller
             'techno' => $techno,
             'automaster' => $automaster,
             'size' => $size,
+            'east' => $east,
             'power' => $power,
         ]);
     }

@@ -6,6 +6,7 @@ namespace core\actions\power;
 use core\entities\power\Products;
 use core\jobs\power\ProductJob;
 use core\services\Client;
+use core\services\XmlImport;
 
 class ProductAction
 {
@@ -22,30 +23,32 @@ class ProductAction
 
     public function run()
     {
-        Products::updateAll(['status' => Products::STATUS_NEW]);
-        do {
-            /** @var Products[] $products */
-            $products = Products::find()
-                ->andWhere(['status' => Products::STATUS_NEW])
-                ->limit(\Yii::$app->settings->get('power.limit'))
-                ->all();
-            if (!$products) {
-                break;
+        $xml = new XmlImport(\Yii::$app->settings->get('power.list'));
+        $list = $xml->getList();
+
+        $table = Products::tableName();
+        \Yii::$app->db->createCommand("UPDATE {$table} SET status = :status WHERE barcode not in (" . "'" . implode("','", $list) . "'" . ")", [
+            ':status' => Products::STATUS_REMOVED,
+        ])->execute();
+
+        $products = [];
+        foreach ($list as $item) {
+            $model = Products::find()->where(['barcode' => $item])->one();
+            if (!$model) {
+                $model = Products::create($item);
             }
+            $model->status = Products::STATUS_IN_JOB;
+            $model->save();
 
-            $requests = [];
-            foreach ($products as $product) {
-                $product->status = Products::STATUS_IN_JOB;
-                $product->save();
+            $products[$model->id] = $model->barcode;
+        }
 
-                $requests[$product->id] = $product->barcode;
-            }
-
+        $chunks = array_chunk($products, \Yii::$app->settings->get('power.limit'), true);
+        foreach ($chunks as $chunk) {
             \Yii::$app->queue->push(new ProductJob([
-                'requests' => $requests,
+                'requests' => $chunk,
             ]));
-
-        } while (true);
+        }
 
         return true;
     }

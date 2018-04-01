@@ -32,7 +32,9 @@ class Xml
         $root = $this->generateRoot();
 
         foreach ($this->products as $product) {
-            $this->generateProduct($root, $product);
+            if($product) {
+                $this->generateProduct($root, $product);
+            }
         }
     }
 
