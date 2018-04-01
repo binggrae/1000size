@@ -73,7 +73,7 @@ class PowerParserController extends Controller
 
         sleep(5);
 
-        return $this->redirect('dashboard/index');
+        return $this->redirect('/dashboard/index');
     }
 
 

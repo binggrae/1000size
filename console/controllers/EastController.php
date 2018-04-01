@@ -3,19 +3,16 @@
 
 namespace console\controllers;
 
-use core\entities\power\Products;
-use core\forms\power\LoginForm;
-use core\jobs\power\ParseJob;
-use core\jobs\power\ProductJob;
-use core\jobs\power\XlsJob;
-use core\jobs\power\XmlJob;
-use core\services\power\Api;
-use core\services\Xml;
+use core\entities\east\Products;
+use core\forms\east\LoginForm;
+use core\jobs\east\ParseJob;
+use core\jobs\east\XmlJob;
+use core\services\east\Api;
 use core\services\XmlImport;
 use yii\console\Controller;
 
 
-class PowerParserController extends Controller
+class EastController extends Controller
 {
 
     /**
@@ -23,7 +20,7 @@ class PowerParserController extends Controller
      */
     private $api;
 
-    public function __construct(string $id, $module, Api $api, array $config = [])
+    public function __construct(string $id, $module, Api $api,  array $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->api = $api;
@@ -35,10 +32,21 @@ class PowerParserController extends Controller
      */
     public function actionRun()
     {
-        \Yii::$app->queue->push(new ParseJob([
-            'login' => \Yii::$app->settings->get('power.login'),
-            'password' => \Yii::$app->settings->get('power.password'),
-        ]));
+        $this->api = \Yii::$container->get(Api::class);
+        $form = new LoginForm([
+            'username' => 'fedor',
+            'password' => 'westmarine123',
+        ]);
+        try {
+            if ($this->api->login($form)) {
+                $this->api->load();
+
+            } else {
+                var_dump('no');
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
 

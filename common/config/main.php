@@ -33,6 +33,5 @@ return [
             'ttr' => 1000,
             'attempts' => 3,
         ],
-        
     ],
 ];

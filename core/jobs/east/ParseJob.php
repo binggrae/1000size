@@ -1,10 +1,10 @@
 <?php
 
 
-namespace core\jobs\power;
+namespace core\jobs\east;
 
-use core\forms\power\LoginForm;
-use core\services\power\Api;
+use core\forms\east\LoginForm;
+use core\services\east\Api;
 use yii\base\BaseObject;
 use yii\queue\JobInterface;
 
@@ -36,12 +36,12 @@ class ParseJob extends BaseObject implements JobInterface
             'username' => $this->login,
             'password' => $this->password,
         ]);
-
         try {
             if ($this->api->login($form)) {
-                $this->api->getProducts();
+                $this->api->load();
+
             } else {
-                return;
+                var_dump('no');
             }
         } catch (\Exception $e) {
             throw $e;

@@ -62,10 +62,6 @@ $this->title = 'Панель управления';
                                 <td>Xml:</td>
                                 <td><a href="/<?= $size['xml']; ?>" target="_blank"><?= $size['xml']; ?></a></td>
                             </tr>
-                            <tr>
-                                <td>Xls:</td>
-                                <td><a href="/<?= $size['xls']; ?>" target="_blank"><?= $size['xls']; ?></a></td>
-                            </tr>
                         </table>
                     </div>
                 </div>
@@ -125,12 +121,6 @@ $this->title = 'Панель управления';
                             </tr>
                             <tr>
                                 <td>Xml:</td>
-                                <td>
-                                    <a href="/<?= $power['xml']; ?>" target="_blank"><?= $power['xml']; ?></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Xls:</td>
                                 <td>
                                     <a href="/<?= $power['xml']; ?>" target="_blank"><?= $power['xml']; ?></a>
                                 </td>
@@ -197,6 +187,36 @@ $this->title = 'Панель управления';
                                 <td>Xml:</td>
                                 <td>
                                     <a href="/<?= $techno['xml']; ?>" target="_blank"><?= $techno['xml']; ?></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Eastmarine
+                    </h3>
+                    <div class="box-tools pull-right">
+                        <div class="btn-group" data-toggle="btn-toggle">
+                            <?= Html::a('<i class="fa fa-play text-green"></i>', ['/east/start'], ['class' => 'btn btn-default btn-sm']) ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive no-padding">
+                        <table class="table">
+                            <tr>
+                                <td>Дата:</td>
+                                <td><?= $east['date']; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Xml:</td>
+                                <td>
+                                    <a href="/<?= $east['xml']; ?>" target="_blank"><?= $east['xml']; ?></a>
                                 </td>
                             </tr>
                         </table>

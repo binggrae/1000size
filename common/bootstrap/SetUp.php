@@ -56,7 +56,6 @@ class SetUp implements BootstrapInterface
             if ($event->job instanceof PowerProductJob) {
                 if (!Products::find()->where(['status' => Products::STATUS_IN_JOB])->count()) {
                     \Yii::$app->queue->priority(2000)->push(new PowerXmlJob());
-                    \Yii::$app->queue->priority(2000)->push(new PowerXlsJob());
                 }
             }
         });
@@ -76,7 +75,6 @@ class SetUp implements BootstrapInterface
             if ($event->job instanceof PowerProductJob) {
                 if (!Products::find()->where(['status' => Products::STATUS_IN_JOB])->count()) {
                     \Yii::$app->queue->priority(2000)->push(new PowerXmlJob());
-                    \Yii::$app->queue->priority(2000)->push(new PowerXlsJob());
                 }
             }
         });
@@ -91,7 +89,6 @@ class SetUp implements BootstrapInterface
         \Yii::$app->settings->set('parser.is_job', 0);
 
         \Yii::$app->queue->priority(2000)->push(new SizeXmlJob());
-        \Yii::$app->queue->priority(2000)->push(new SizeXlsJob());
 
     }
 
