@@ -4,6 +4,7 @@
 /* @var $size [] */
 /* @var $power [] */
 /* @var $automaster [] */
+/* @var $bch [] */
 
 /* @var $techno [] */
 
@@ -223,6 +224,37 @@ $this->title = 'Панель управления';
                                 <td>Ошибки:</td>
                                 <td>
                                     <a href="/<?= $east['error']; ?>" target="_blank"><?= $east['count']; ?></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Bch5
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive no-padding">
+                        <table class="table">
+                            <tr>
+                                <td>Дата:</td>
+                                <td><?= $bch['date']; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Xml:</td>
+                                <td>
+                                    <a href="/<?= $bch['xml']; ?>" target="_blank"><?= $bch['xml']; ?></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ошибки:</td>
+                                <td>
+                                    <a href="/<?= $bch['error']; ?>" target="_blank"><?= $bch['count']; ?></a>
                                 </td>
                             </tr>
                         </table>
