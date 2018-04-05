@@ -35,6 +35,10 @@ class Client
     }
 
 
+    /**
+     * @param $requests
+     * @return \yii\httpclient\Response[]
+     */
     public function batch($requests)
     {
         return $this->client->batchSend($requests);
@@ -53,8 +57,7 @@ class Client
             CURLOPT_COOKIEJAR => \Yii::getAlias('@common/data/cookie.txt'),
             CURLOPT_COOKIEFILE => \Yii::getAlias('@common/data/cookie.txt'),
             CURLOPT_TIMEOUT => 100,
-            CURLOPT_FOLLOWLOCATION => true, 
-            CURLOPT_INTERFACE => \Yii::$app->settings->get('site.interface'),
+            CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
 //            CURLOPT_VERBOSE => true,
         ];
