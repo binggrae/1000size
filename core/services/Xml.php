@@ -17,7 +17,7 @@ class Xml
 
     /**
      * Xml constructor.
-     * @param ProductInterface[] $products
+     * @param ProductInterface[] $products 
      */
     public function __construct($products)
     {

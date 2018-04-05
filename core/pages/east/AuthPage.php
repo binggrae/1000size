@@ -13,7 +13,6 @@ class AuthPage extends Page
 
     public function __construct($html)
     {
-        file_put_contents(\Yii::getAlias('@common/data/login.html'), $html);
         $this->pq = \phpQuery::newDocumentHTML($html);
     }
 

@@ -35,6 +35,7 @@ class LoginAction
             $home->close();
             return $isLogin;
         } else {
+			var_dump($request->getStatusCode());
             throw new RequestException('Failed auth');
         }
     }

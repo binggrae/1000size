@@ -53,6 +53,7 @@ class ParseJob extends BaseObject implements JobInterface
 
             \Yii::$app->settings->set('automaster.date', time());
         }
+		//unlink($runtime . $name . '.xlsx'); 
     }
 
 

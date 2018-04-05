@@ -27,6 +27,7 @@ class ProductPage extends Page
         $tr = $this->pq->find('.catalog .details');
 
         if (!$tr->count()) {
+			var_dump('NULL FIELD');
             return null;
         }
 

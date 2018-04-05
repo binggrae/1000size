@@ -33,8 +33,8 @@ class EastController extends Controller
     public function actionStart()
     {
         \Yii::$app->queue->push(new ParseJob([
-            'login' => \Yii::$app->settings->get('east.login'),
-            'password' => \Yii::$app->settings->get('east.password'),
+            'login' => \Yii::$app->settings->get('eastmarine.login'),
+            'password' => \Yii::$app->settings->get('eastmarine.password'),
         ]));
 
         sleep(5);

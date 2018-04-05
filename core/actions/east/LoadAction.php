@@ -31,7 +31,7 @@ class LoadAction
     {
         $xmlImporter = new XmlImport(\Yii::$app->settings->get('eastmarine.list'));
         $list = $xmlImporter->getList();
-        $chunks = array_chunk($list, 5, true);
+        $chunks = array_chunk($list, 1, true);
         $errors = [];
 
         foreach ($chunks as $chunk) {
@@ -45,7 +45,7 @@ class LoadAction
             $responses = $this->client->batch($requests);
 
             foreach ($responses as $id => $response) {
-                var_dump($id);
+				var_dump($id);
                 if($response->isOk) {
                     $page = new ProductPage($list[$id], $response->content);
                     $data = $page->getData();
@@ -58,20 +58,26 @@ class LoadAction
                 } else {
                     var_dump('fail');
                     var_dump($response->getStatusCode());
-                    die();
                 }
-
-            }
-            sleep(2);
+            } 
         }
-
+		var_dump(count($this->products));
+		var_dump(\Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('eastmarine.error')));
+				
+		$errorStr = '';
+		foreach($errors as $error) {
+			$errorStr .= $error . "\n";
+		}
+				
+		file_put_contents(\Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('eastmarine.error')), $errorStr);
+        \Yii::$app->settings->set('eastmarine.date', time());
+        \Yii::$app->settings->set('eastmarine.error_count', count($errors));
+		
         $xmlService = new Xml($this->products);
         $xmlService->generate();
         $xmlService->save('@frontend/web/' . \Yii::$app->settings->get('eastmarine.xml'));
 
-        file_put_contents('@frontend/web/' . \Yii::$app->settings->get('eastmarine.error'), VarDumper::dumpAsString($errors));
-        \Yii::$app->settings->set('automaster.date', time());
-        \Yii::$app->settings->set('automaster.error_count', count($errors));
+        
 
         return true;
     }

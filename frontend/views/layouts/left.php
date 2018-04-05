@@ -13,7 +13,14 @@
 
                     ['label' => 'Панель управления', 'icon' => 'dashboard', 'url' => ['/dashboard']],
                     ['label' => 'Настройки', 'icon' => 'gears', 'url' => ['/settings']],
-
+                    [
+						'label' => 'Свободно ' . \Yii::$app->formatter->asShortSize(disk_free_space('/')),
+						'icon' => 'database', 
+						'url' => '#',
+						'options' => [
+							'class' => 'bg-' . (disk_free_space('/') > 40000000 ? 'green' : 'red')
+						]
+					],
                 ],
             ]
         ) ?>

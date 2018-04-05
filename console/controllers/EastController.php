@@ -32,21 +32,10 @@ class EastController extends Controller
      */
     public function actionRun()
     {
-        $this->api = \Yii::$container->get(Api::class);
-        $form = new LoginForm([
-            'username' => 'fedor',
-            'password' => 'westmarine123',
-        ]);
-        try {
-            if ($this->api->login($form)) {
-                $this->api->load();
-
-            } else {
-                var_dump('no');
-            }
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        \Yii::$app->queue->push(new ParseJob([
+            'login' => \Yii::$app->settings->get('eastmarine.login'),
+            'password' => \Yii::$app->settings->get('eastmarine.password'),
+        ]));
     }
 
 

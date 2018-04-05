@@ -53,7 +53,7 @@ class DashboardController extends Controller
         ];
         $east = [
             'error' => \Yii::$app->settings->get('eastmarine.error'),
-            'count' => \Yii::$app->settings->get('count', 'eastmarine', 0),
+            'count' => \Yii::$app->settings->get('error_count', 'eastmarine', 0),
             'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('eastmarine.date')),
             'xml' => \Yii::$app->settings->get('eastmarine.xml'),
         ];
