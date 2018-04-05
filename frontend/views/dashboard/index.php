@@ -251,12 +251,6 @@ $this->title = 'Панель управления';
                                     <a href="/<?= $bch['xml']; ?>" target="_blank"><?= $bch['xml']; ?></a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Ошибки:</td>
-                                <td>
-                                    <a href="/<?= $bch['error']; ?>" target="_blank"><?= $bch['count']; ?></a>
-                                </td>
-                            </tr>
                         </table>
                     </div>
                 </div>
