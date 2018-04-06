@@ -6,12 +6,10 @@ namespace core\parsers\bch;
 
 use core\parsers\bch\elements\Category;
 use core\parsers\bch\elements\Product;
-use core\parsers\bch\forms\LoginForm;
 use core\parsers\bch\pages\ItemPage;
 use core\parsers\bch\pages\ListPage;
 use core\services\Client;
 use core\services\exports\Xml;
-use yii\web\Cookie;
 
 
 class Api
@@ -23,18 +21,19 @@ class Api
     /** @var Category[] */
     private $categories = [];
 
+    private $loaded = [];
+
     public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->categories[] = new Category('propellers.php');
-        $this->categories[] = new Category('parts_outboard.php');
-        $this->categories[] = new Category('parts_snow.php');
         $this->categories[] = new Category('accessories.php?acc_id=1');
     }
 
 
     public function parse()
     {
+        \Yii::$app->settings->set('bch.is_job', true);
+
         $this->auth();
         $xml = new Xml(['barcode', 'title', 'unit', 'storages', 'purchase', 'retail']);
 
@@ -55,6 +54,7 @@ class Api
         }
         $xml->save(\Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('bch.xml')));
         \Yii::$app->settings->set('bch.date', time());
+        \Yii::$app->settings->set('bch.is_job', false);
     }
 
 
@@ -76,11 +76,28 @@ class Api
                     $categories[] = $child;
                 }
             } else {
-                yield $page->getList();
+                yield $this->filterLoaded($page->getList());
             }
 
             $page->close();
         }
+    }
+
+    /**
+     * @param Product[] $items
+     * @return Product[]
+     */
+    private function filterLoaded($items)
+    {
+        $result = [];
+        foreach ($items as $item) {
+            if(!isset($this->loaded[$item->link])) {
+                $this->loaded[$item->link] = true;
+                $result[] = $item;
+            }
+        }
+
+        return $result;
     }
 
     /**

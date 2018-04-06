@@ -16,6 +16,9 @@ class ListPage extends Page
         parent::__construct($html);
     }
 
+    /**
+     * @return Product[]
+     */
     public function getList()
     {
         $products = [];

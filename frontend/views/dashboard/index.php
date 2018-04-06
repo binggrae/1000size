@@ -237,6 +237,18 @@ $this->title = 'Панель управления';
                     <h3 class="box-title">
                         Bch5
                     </h3>
+                    <div class="box-tools pull-right">
+                        <div class="btn-group" data-toggle="btn-toggle">
+                            <?php if ($bch['status']) : ?>
+                                <?= Html::tag('span', '<i class="fa fa-stop"></i>', [
+                                    'class' => 'btn btn-danger btn-sm disabled',
+                                    'title' => 'В работе'
+                                ]) ?>
+                            <?php else : ?>
+                                <?= Html::a('<i class="fa fa-play text-green"></i>', ['/bch/start'], ['class' => 'btn btn-default btn-sm']) ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive no-padding">
