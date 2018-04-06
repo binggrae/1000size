@@ -37,7 +37,9 @@ class ItemPage extends Page
 
     public function getRetail()
     {
-        return (integer)trim(str_replace('р.', '', explode(':', $this->pq->find('#descr h3')->text())[1]));
+        $h3 = explode(':', $this->pq->find('#descr h3')->text());
+        $retail = count($h3) > 1 ? $h3[1] : '';
+        return (integer)trim(str_replace('р.', '', $retail));
     }
 
     public function getStorages()
