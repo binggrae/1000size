@@ -55,6 +55,7 @@ class DashboardController extends Controller
         $bch = [
             'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('bch.date')),
             'xml' => \Yii::$app->settings->get('bch.xml'),
+            'status' => \Yii::$app->settings->get('is_job', 'bch', false),
         ];
 
         $east = [
