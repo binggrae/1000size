@@ -11,6 +11,7 @@ use core\parsers\bch\pages\ItemPage;
 use core\parsers\bch\pages\ListPage;
 use core\services\Client;
 use core\services\exports\Xml;
+use yii\web\Cookie;
 
 
 class Api
@@ -42,6 +43,7 @@ class Api
                 $this->loadItems($items);
 
                 foreach ($items as $item) {
+                    $xml->addProduct($item);
                     try {
                         $xml->addProduct($item);
                     } catch (\Exception $e) {
@@ -120,20 +122,25 @@ class Api
                 $page->close();
             }
         }
+
     }
 
     private function auth()
     {
-        $form = new LoginForm([
-            'login' => \Yii::$app->settings->get('bch.login'), //'info@west-marine.ru',
-            'password' => \Yii::$app->settings->get('bch.password'), //'x&skm8'
-        ]);
-        $response = $this->client->post($form->action, $form->data)
-            ->addHeaders([
-                'Origin' => 'https://bch5.ru',
-                'Referer' => 'https://bch5.ru/auth_login.php'
-            ])
-            ->send();
+        $this->client->get(self::URL . 'cabinet.php')->addCookies([
+            [
+                'name' => 'my_name5',
+                'value' => 'info@west-marine.ru'
+            ],
+            [
+                'name' => 'my_name3',
+                'value' => '7366'
+            ],
+            [
+                'name' => 'my_name6',
+                'value' => 'info@west-marine.ru'
+            ]
+        ])->send();
     }
 
 }
