@@ -47,6 +47,8 @@ class ParseJob extends BaseObject implements JobInterface
             throw $e;
         }
 
+        \Yii::$app->settings->set('east.is_job', true);
+
     }
 
 

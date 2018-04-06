@@ -32,6 +32,8 @@ class EastController extends Controller
 
     public function actionStart()
     {
+        \Yii::$app->settings->set('east.is_job', true);
+
         \Yii::$app->queue->push(new ParseJob([
             'login' => \Yii::$app->settings->get('eastmarine.login'),
             'password' => \Yii::$app->settings->get('eastmarine.password'),

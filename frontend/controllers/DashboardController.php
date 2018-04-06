@@ -62,6 +62,7 @@ class DashboardController extends Controller
             'error' => \Yii::$app->settings->get('eastmarine.error'),
             'count' => \Yii::$app->settings->get('error_count', 'eastmarine', 0),
             'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('eastmarine.date')),
+            'status' => \Yii::$app->settings->get('is_job', 'eastmarine', false),
             'xml' => \Yii::$app->settings->get('eastmarine.xml'),
         ];
 

@@ -5,6 +5,7 @@
 /* @var $power [] */
 /* @var $automaster [] */
 /* @var $bch [] */
+/* @var $east [] */
 
 /* @var $techno [] */
 
@@ -132,7 +133,6 @@ $this->title = 'Панель управления';
             </div>
         </div>
 
-
         <div class="col-md-4">
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -164,7 +164,6 @@ $this->title = 'Панель управления';
             </div>
         </div>
 
-
         <div class="col-md-4">
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -195,6 +194,7 @@ $this->title = 'Панель управления';
                 </div>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -203,7 +203,14 @@ $this->title = 'Панель управления';
                     </h3>
                     <div class="box-tools pull-right">
                         <div class="btn-group" data-toggle="btn-toggle">
-                            <?= Html::a('<i class="fa fa-play text-green"></i>', ['/east/start'], ['class' => 'btn btn-default btn-sm']) ?>
+                            <?php if ($east['status']) : ?>
+                                <?= Html::tag('span', '<i class="fa fa-stop"></i>', [
+                                    'class' => 'btn btn-danger btn-sm disabled',
+                                    'title' => 'В работе'
+                                ]) ?>
+                            <?php else : ?>
+                                <?= Html::a('<i class="fa fa-play text-green"></i>', ['/east/start'], ['class' => 'btn btn-default btn-sm']) ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
