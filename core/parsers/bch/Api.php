@@ -43,7 +43,6 @@ class Api
                 $this->loadItems($items);
 
                 foreach ($items as $item) {
-                    $xml->addProduct($item);
                     try {
                         $xml->addProduct($item);
                     } catch (\Exception $e) {
