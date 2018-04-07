@@ -21,7 +21,7 @@ class ItemPage extends Page
 
     public function getBarcode()
     {
-        return $this->barcode = explode('.', $this->pq->find('#razdel1')->text())[0];
+        return $this->barcode = explode('. ', $this->pq->find('#razdel1')->text())[0];
     }
 
     public function getTitle()
