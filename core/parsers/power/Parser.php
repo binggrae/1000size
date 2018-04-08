@@ -34,7 +34,7 @@ class Parser
         $import = new XmlImport(\Yii::$app->settings->get('power.list'));
         $list = $import->getList();
 
-        $chunks = array_chunk($list, 1, 1);
+        $chunks = array_chunk($list, 7, 1);
         $count = count($chunks);
         $errors = [];
 
