@@ -34,7 +34,7 @@ class Parser
         $import = new XmlImport(\Yii::$app->settings->get('power.list'));
         $list = $import->getList();
 
-        $chunks = array_chunk($list, 7, 1);
+        $chunks = array_chunk($list, 1, 1);
         $count = count($chunks);
         $errors = [];
 
@@ -60,6 +60,7 @@ class Parser
                 if (!$page->hasResult($products[$i]->barcode->value)) {
                     $errors[] = $products[$i]->barcode->value;
                     $products[$i]->barcode->value = null;
+                    var_dump('no result');
                     continue;
                 }
 

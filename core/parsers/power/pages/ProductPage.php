@@ -12,7 +12,6 @@ class ProductPage extends Page
         $posEnd = strpos($html, '<footer');
         $html = substr($html, $posStart, $posEnd - $posStart);
 
-        $this->save('test.html', $html );
         parent::__construct($html);
     }
 
@@ -37,7 +36,7 @@ class ProductPage extends Page
 
     public function getStorages()
     {
-        return (integer)trim($this->pq->find('td:eq(3)')->text());
+        return (integer)trim($this->trPq->find('td:eq(3)')->text());
     }
 
 
