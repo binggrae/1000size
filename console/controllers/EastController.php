@@ -7,6 +7,7 @@ use core\entities\east\Products;
 use core\forms\east\LoginForm;
 use core\jobs\east\ParseJob;
 use core\jobs\east\XmlJob;
+use core\parsers\east_catalog\Parser;
 use core\services\east\Api;
 use core\services\XmlImport;
 use yii\console\Controller;
@@ -15,15 +16,17 @@ use yii\console\Controller;
 class EastController extends Controller
 {
 
-    /**
-     * @var Api
-     */
+    /** @var Api */
     private $api;
 
-    public function __construct(string $id, $module, Api $api,  array $config = [])
+    /** @var Parser */
+    private $parser;
+
+    public function __construct(string $id, $module, Api $api, Parser $parser,  array $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->api = $api;
+        $this->parser = $parser;
     }
 
 
@@ -58,6 +61,12 @@ class EastController extends Controller
             ]
         ]);
         $file->saveAs(\Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('power.xls')));
+    }
+
+
+    public function actionCatalog()
+    {
+        $this->parser->run();
     }
 
 

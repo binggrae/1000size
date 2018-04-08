@@ -18,7 +18,6 @@ class ProductPage
 
     public function __construct($html)
     {
-        file_put_contents(\Yii::getAlias('@common/data/page.html'), $html);
         $this->pq = \phpQuery::newDocumentHTML($html);
     }
 

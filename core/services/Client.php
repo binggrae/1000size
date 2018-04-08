@@ -22,11 +22,9 @@ class Client
     }
 
 
-
     public function get($url, $data = [])
     {
         return $this->send('get', $url, $data);
-
     }
 
     public function post($url, $data = [])

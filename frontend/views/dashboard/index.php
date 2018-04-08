@@ -74,57 +74,38 @@ $this->title = 'Панель управления';
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        Power group
+                        PowerGroup
                     </h3>
                     <div class="box-tools pull-right">
-                        <?= Html::a('<i class="fa fa-download text-blue"></i>', ['/power-parser/load'], [
-                            'class' => 'btn btn-default btn-sm',
-                            'title' => 'Загрузка артиклей'
-                        ]) ?>
-                        <?php if (!$power['job']) : ?>
-                            <?= Html::a('<i class="fa fa-play text-green"></i>', ['/power-parser/start'], [
-                                'class' => 'btn btn-default btn-sm',
-                                'title' => 'Запустить'
-                            ]) ?>
-                        <?php else : ?>
-                            <?= Html::a('<i class="fa fa-stop"></i>', ['/power-parser/start'], [
-                                'class' => 'btn btn-danger btn-sm disabled',
-                                'title' => 'В работе'
-                            ]) ?>
-                        <?php endif; ?>
+                        <div class="btn-group" data-toggle="btn-toggle">
+                            <?php if ($power['status']) : ?>
+                                <?= Html::tag('span', '<i class="fa fa-stop"></i>', [
+                                    'class' => 'btn btn-danger btn-sm disabled',
+                                    'title' => 'В работе'
+                                ]) ?>
+                            <?php else : ?>
+                                <?= Html::a('<i class="fa fa-play text-green"></i>', ['/power-parser/start'], ['class' => 'btn btn-default btn-sm']) ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive no-padding">
                         <table class="table">
                             <tr>
-                                <td>Ожидают:</td>
-                                <td>
-                                    <?= Html::a($power['imported'], ['/power-parser/list', 'status' => PowerProducts::STATUS_NEW]); ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>В работе:
-                                <td>
-                                    <?= Html::a($power['job'], ['/power-parser/list', 'status' => PowerProducts::STATUS_IN_JOB]); ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Загружено:</td>
-                                <td>
-                                    <?= Html::a($power['loaded'], ['/power-parser/list', 'status' => PowerProducts::STATUS_LOADED]); ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Удалено:</td>
-                                <td>
-                                    <?= Html::a($power['removed'], ['/power-parser/list', 'status' => PowerProducts::STATUS_REMOVED]); ?>
-                                </td>
+                                <td>Дата:</td>
+                                <td><?= $power['date']; ?></td>
                             </tr>
                             <tr>
                                 <td>Xml:</td>
                                 <td>
                                     <a href="/<?= $power['xml']; ?>" target="_blank"><?= $power['xml']; ?></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ошибки:</td>
+                                <td>
+                                    <a href="/<?= $power['error']; ?>" target="_blank"><?= $power['count']; ?></a>
                                 </td>
                             </tr>
                         </table>
@@ -163,7 +144,8 @@ $this->title = 'Панель управления';
                 </div>
             </div>
         </div>
-
+    </div>
+    <div class="row">
         <div class="col-md-4">
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -275,5 +257,9 @@ $this->title = 'Панель управления';
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="row">
+
     </div>
 </div>

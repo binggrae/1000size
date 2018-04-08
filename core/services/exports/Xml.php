@@ -25,19 +25,21 @@ class Xml
 
     public function addProduct(ProductExported $product)
     {
-        $root = $this->xml->createElement('Товар');
+        if($product->isLoad()) {
+            $root = $this->xml->createElement('Товар');
 
-        foreach ($product->export($this->fields) as $element) {
-            if(!is_array($element)) {
-                $root->appendChild($this->createElement($element));
-            } else {
-                foreach ($element as  $item) {
-                    $root->appendChild($this->createElement($item));
+            foreach ($product->export($this->fields) as $element) {
+                if(!is_array($element)) {
+                    $root->appendChild($this->createElement($element));
+                } else {
+                    foreach ($element as  $item) {
+                        $root->appendChild($this->createElement($item));
+                    }
                 }
             }
-        }
 
-        $this->root->appendChild($root);
+            $this->root->appendChild($root);
+        }
     }
 
     private function createElement(XmlElement $element)
@@ -66,9 +68,9 @@ class Xml
     }
 
 
-    public function save($path)
+    public function save($alias)
     {
-        $this->xml->save(\Yii::getAlias($path));
+        $this->xml->save(\Yii::getAlias($alias));
     }
 
 

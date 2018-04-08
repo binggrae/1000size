@@ -38,12 +38,11 @@ class DashboardController extends Controller
         ];
 
         $power = [
-            'imported' => PowerProducts::find()->where(['status' => PowerProducts::STATUS_NEW])->count(),
-            'loaded' => PowerProducts::find()->where(['status' => PowerProducts::STATUS_LOADED])->count(),
-            'removed' => PowerProducts::find()->where(['status' => PowerProducts::STATUS_REMOVED])->count(),
-            'job' => PowerProducts::find()->where(['status' => PowerProducts::STATUS_IN_JOB])->count(),
+            'error' => \Yii::$app->settings->get('power.error'),
+            'count' => \Yii::$app->settings->get('error_count', 'power', 0),
+            'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('power.date')),
+            'status' => \Yii::$app->settings->get('is_job', 'power', false),
             'xml' => \Yii::$app->settings->get('power.xml'),
-            'xls' => \Yii::$app->settings->get('power.xls'),
         ];
 
 

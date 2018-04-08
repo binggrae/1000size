@@ -7,6 +7,7 @@ namespace frontend\controllers;
 use core\entities\power\Products;
 use core\forms\power\LoadForm;
 use core\jobs\power\ParseJob;
+use core\jobs\PowerParseJob;
 use core\services\power\Importer;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -66,10 +67,7 @@ class PowerParserController extends Controller
 
     public function actionStart()
     {
-        \Yii::$app->queue->push(new ParseJob([
-            'login' => \Yii::$app->settings->get('power.login'),
-            'password' => \Yii::$app->settings->get('power.password'),
-        ]));
+        \Yii::$app->queue->push(new PowerParseJob());
 
         sleep(5);
 
