@@ -61,6 +61,7 @@ class Parser
                     $errors[] = $products[$i]->barcode->value;
                     $products[$i]->barcode->value = null;
                     var_dump('no result');
+					$page->close();
                     continue;
                 }
 

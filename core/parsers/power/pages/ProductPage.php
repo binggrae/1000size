@@ -11,6 +11,7 @@ class ProductPage extends Page
         $posStart = strpos($html, '<div class="wrapper1');
         $posEnd = strpos($html, '<footer');
         $html = substr($html, $posStart, $posEnd - $posStart);
+        file_put_contents(\Yii::getAlias('@common/data/pview.html'), $html);
 
         parent::__construct($html);
     }
@@ -20,8 +21,9 @@ class ProductPage extends Page
 
     public function hasResult($barcode)
     {
-        foreach ($this->pq->find('#page_body tr') as $item) {
-            if (trim(pq($item)->find('td:eq(0)')->text()) == $barcode) {
+        foreach ($this->pq->find('#page_body table:eq(0) tr') as $item) {
+            $temp = trim(pq($item)->find('td:eq(0)')->text());
+            if ($temp == $barcode) {
                 $this->trPq = pq($item);
                 return true;
             }
