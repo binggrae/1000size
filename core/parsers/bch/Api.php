@@ -4,6 +4,7 @@
 namespace core\parsers\bch;
 
 
+use core\entities\Factor;
 use core\parsers\bch\elements\Category;
 use core\parsers\bch\elements\Product;
 use core\parsers\bch\pages\ItemPage;
@@ -26,12 +27,16 @@ class Api
     public function __construct(Client $client)
     {
         $this->client = $client;
+        $this->client->setCookie('bch');
         $this->categories[] = new Category('accessories.php?acc_id=1');
     }
 
 
     public function parse()
     {
+        $factor = Factor::find()->where(['key' => 'bch'])->one();
+        $factor = $factor ? $factor->value : 1.3;
+
         \Yii::$app->settings->set('bch.is_job', true);
 
         $this->auth();
@@ -43,6 +48,7 @@ class Api
 
                 foreach ($items as $item) {
                     try {
+                        $item->factor = $factor;
                         $xml->addProduct($item);
                     } catch (\Exception $e) {
                         var_dump($item);

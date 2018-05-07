@@ -6,11 +6,12 @@ namespace core\parsers;
 
 abstract class Page
 {
-    /** @var \phpQueryObject  */
+    /** @var \phpQueryObject */
     protected $pq;
 
     public function __construct($html)
     {
+//        file_put_contents(\Yii::getAlias('@common/data/' . uniqid() . '.html'), $html);
         $this->pq = \phpQuery::newDocumentHTML($html);
     }
 

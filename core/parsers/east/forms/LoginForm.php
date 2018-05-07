@@ -1,15 +1,17 @@
 <?php
 
 
-namespace core\forms\east;
+namespace core\parsers\east\forms;
 
 
+use core\parsers\east\Parser;
 use yii\base\Model;
 
 /**
  * Class LoginForm
  * @package core\forms\power
- * @property array $postData
+ * @property string $action
+ * @property array $data
  */
 class LoginForm extends Model
 {
@@ -25,11 +27,16 @@ class LoginForm extends Model
         ];
     }
 
-    public function getPostData()
+    public function getData()
     {
         return [
             'login' => $this->username,
             'pass' => $this->password,
         ];
+    }
+
+    public function getAction()
+    {
+        return Parser::URL . 'login';
     }
 }

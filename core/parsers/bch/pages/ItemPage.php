@@ -51,7 +51,6 @@ class ItemPage extends Page
             $type = str_replace('В наличии', '', $pq->find('a')->text());
             $type = trim($type);
             $result[] = new Storage($type ?: 'Под заказ', (integer)$pq->find('b')->text());
-
         }
 
         return $result;

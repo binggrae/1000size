@@ -16,5 +16,11 @@ class BchController extends Controller
         \Yii::$app->queue->push(new BchParseJob());
     }
 
+    public function actionTest()
+    {
+        $job = new BchParseJob();
+        $job->execute(null);
+    }
+
 
 }

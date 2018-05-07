@@ -12,6 +12,7 @@
                     ['label' => 'Управление', 'options' => ['class' => 'header']],
 
                     ['label' => 'Панель управления', 'icon' => 'dashboard', 'url' => ['/dashboard']],
+                    ['label' => 'Наценка', 'icon' => 'balance-scale', 'url' => ['/factor']],
                     ['label' => 'Настройки', 'icon' => 'gears', 'url' => ['/settings']],
                     [
 						'label' => 'Свободно ' . \Yii::$app->formatter->asShortSize(disk_free_space('/')),

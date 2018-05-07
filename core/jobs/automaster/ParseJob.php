@@ -4,9 +4,9 @@
 namespace core\jobs\automaster;
 
 
-
 use core\entities\automaster\Product;
-use core\services\Xml;
+use core\entities\Factor;
+use core\services\exports\Xml;
 use core\services\XmlImport;
 use yii\base\BaseObject;
 use yii\queue\JobInterface;
@@ -16,6 +16,10 @@ class ParseJob extends BaseObject implements JobInterface
 
     public function execute($queue)
     {
+
+        $factor = Factor::find()->where(['key' => 'auto'])->one();
+        $factor = $factor ? $factor->value : 1.3;
+
         $xml = new XmlImport(\Yii::$app->settings->get('automaster.list'));
         $list = array_flip($xml->getList());
 
@@ -30,30 +34,25 @@ class ParseJob extends BaseObject implements JobInterface
 
         $zip = new \ZipArchive();
 
+        $exporter = new Xml(['barcode', 'title', 'unit', 'storage', 'purchase', 'retail', 'brand']);
         if ($zip->open($runtime . $name . '.xlsx') == true) {
-            $products = [];
             foreach ($this->getData($zip) as $data) {
-                if(isset($list[$data['B']])) {
-                    $products[] = new Product(
-                        $data['B'],
-                        $data['C'],
-                        $data['H'],
-                        $data['G'],
-                        $data['F'],
-                        $data['A']
-                    );
-                }
+                if (isset($list[$data['B']])) {
+                    $product = new Product($data['B'], $factor);
+                    $product->title->set($data['C']);
+                    $product->unit->set($data['H']);
+                    $product->storage->set($data['G']);
+                    $product->purchase->set($data['F']);
+                    $product->brand->set($data['A']);
 
+                    $exporter->addProduct($product);
+                }
             }
             $zip->close();
-
-            $xmlService = new Xml($products);
-            $xmlService->generate();
-            $xmlService->save('@frontend/web/' . \Yii::$app->settings->get('automaster.xml'));
+            $exporter->save('@frontend/web/' . \Yii::$app->settings->get('automaster.xml'));
 
             \Yii::$app->settings->set('automaster.date', time());
         }
-		//unlink($runtime . $name . '.xlsx'); 
     }
 
 

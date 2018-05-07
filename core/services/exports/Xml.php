@@ -6,7 +6,7 @@ namespace core\services\exports;
 
 class Xml
 {
-    protected $date = [];
+    protected $attributes = [];
 
     private $xml;
 
@@ -16,23 +16,33 @@ class Xml
 
     public function __construct($fields)
     {
-        $this->date['ДатаСоздания'] = date('n/d/Y H:i:s A', time());
+        $this->attributes['ДатаСоздания'] = date('n/d/Y H:i:s A', time());
         $this->xml = new \domDocument("1.0", "utf-8");
 
         $this->root = $this->generateRoot();
         $this->fields = $fields;
     }
 
+    public function addAttribute($attr, $value)
+    {
+        $this->attributes[$attr] = $value;
+    }
+
     public function addProduct(ProductExported $product)
     {
-        if($product->isLoad()) {
+        if ($product->isLoad()) {
             $root = $this->xml->createElement('Товар');
+            if (!empty($product->getXmlAttributes())) {
+                foreach ($product->getXmlAttributes() as $key => $value) {
+                    $root->setAttribute($key, $value);
+                }
+            }
 
             foreach ($product->export($this->fields) as $element) {
-                if(!is_array($element)) {
+                if (!is_array($element)) {
                     $root->appendChild($this->createElement($element));
                 } else {
-                    foreach ($element as  $item) {
+                    foreach ($element as $item) {
                         $root->appendChild($this->createElement($item));
                     }
                 }
@@ -44,8 +54,11 @@ class Xml
 
     private function createElement(XmlElement $element)
     {
+        $element->value = is_double($element->value) ?
+            number_format($element->value, 2, ',', '')
+            : $element->value;
         $el = $this->xml->createElement($element->name, $element->value);
-        if(!empty($element->attributes)) {
+        if (!empty($element->attributes)) {
             foreach ($element->attributes as $key => $value) {
                 $el->setAttribute($key, $value);
             }
@@ -58,7 +71,7 @@ class Xml
     private function generateRoot()
     {
         $root = $this->xml->createElement('ЦеныИОстатки');
-        foreach ($this->date as $key => $value) {
+        foreach ($this->attributes as $key => $value) {
             $root->setAttribute($key, $value);
         }
 

@@ -3,70 +3,37 @@
 
 namespace console\controllers;
 
-use core\entities\east\Products;
-use core\forms\east\LoginForm;
+
 use core\jobs\east\ParseJob;
-use core\jobs\east\XmlJob;
-use core\parsers\east_catalog\Parser;
-use core\services\east\Api;
-use core\services\XmlImport;
+use core\jobs\EastParseJob;
+use core\parsers\east\Parser;
+use core\parsers\east_catalog\Parser as CatalogParser;
 use yii\console\Controller;
 
 
 class EastController extends Controller
 {
 
-    /** @var Api */
-    private $api;
-
-    /** @var Parser */
-    private $parser;
-
-    public function __construct(string $id, $module, Api $api, Parser $parser,  array $config = [])
+    public function actionTest()
     {
-        parent::__construct($id, $module, $config);
-        $this->api = $api;
-        $this->parser = $parser;
+        \Yii::$app->settings->set('eastmarine.is_job', true);
+        /** @var Parser $parser */
+        $parser = \Yii::$container->get(Parser::class);
+
+        $parser->run();
     }
 
 
-    /**
-     * @throws \Exception
-     */
     public function actionRun()
     {
-        \Yii::$app->queue->push(new ParseJob([
-            'login' => \Yii::$app->settings->get('eastmarine.login'),
-            'password' => \Yii::$app->settings->get('eastmarine.password'),
-        ]));
-    }
-
-
-    public function actionSave()
-    {
-        \Yii::$app->queue->priority(2000)->push(new XmlJob());
-    }
-
-
-    public function actionXls()
-    {
-        $file = \Yii::createObject([
-            'class' => 'codemix\excelexport\ExcelFile',
-            'sheets' => [
-                'ЦеныИОстатки' => [
-                    'class' => 'codemix\excelexport\ActiveExcelSheet',
-                    'query' => Products::find()->where(['!=', 'status', Products::STATUS_REMOVED]),
-                    'attributes' => ['barcodeVal', 'titleVal', 'unitVal', 'storageMVal', 'purchaseVal', 'retailVal'],
-                ]
-            ]
-        ]);
-        $file->saveAs(\Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('power.xls')));
+        \Yii::$app->queue->push(new EastParseJob());
     }
 
 
     public function actionCatalog()
     {
-        $this->parser->run();
+        $parser = \Yii::$container->get(CatalogParser::class);
+        $parser->run();
     }
 
 

@@ -1,14 +1,14 @@
 <?php
 
 
-namespace core\parsers\power;
+namespace core\parsers\east;
 
 
 use core\entities\Factor;
-use core\parsers\power\elements\Product;
-use core\parsers\power\forms\LoginForm;
-use core\parsers\power\pages\LoginPage;
-use core\parsers\power\pages\ProductPage;
+use core\parsers\east\elements\Product;
+use core\parsers\east\forms\LoginForm;
+use core\parsers\east\pages\LoginPage;
+use core\parsers\east\pages\ProductPage;
 use core\services\Client;
 use core\services\exports\Xml;
 use core\services\XmlImport;
@@ -16,7 +16,7 @@ use core\services\XmlImport;
 class Parser
 {
 
-    const URL = 'https://m-powergroup.ru/';
+    const URL = 'http://dealer.eastmarine.ru/';
 
     /** @var Client */
     private $client;
@@ -25,21 +25,21 @@ class Parser
     public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->client->setCookie('pg');
+        $this->client->setCookie('east');
     }
 
     public function run()
     {
-        \Yii::$app->settings->set('power.is_job', true);
-        $this->auth();
+        \Yii::$app->settings->set('eastmarine.is_job', true);
+        var_dump($this->auth());
 
-        $factor = Factor::find()->where(['key' => 'pg'])->one();
+        $factor = Factor::find()->where(['key' => 'eastmarine'])->one();
         $factor = $factor ? $factor->value : 1.3;
 
-        $import = new XmlImport(\Yii::$app->settings->get('power.list'));
+        $import = new XmlImport(\Yii::$app->settings->get('eastmarine.list'));
         $list = $import->getList();
 
-        $chunks = array_chunk($list, 7, 1);
+        $chunks = array_chunk($list, 1, 1);
         $count = count($chunks);
         $errors = [];
 
@@ -70,22 +70,27 @@ class Parser
                     continue;
                 }
 
+                list($purchase, $retail) = $page->getPrice();
+
                 $products[$i]->title->set($page->getTitle());
-                $products[$i]->storage->set($page->getStorages());
-                $products[$i]->purchase->set($page->getPurchase());
+                $products[$i]->storage->set($page->getStorage());
+                $products[$i]->purchase->set($purchase);
+                $products[$i]->retail->set($retail);
 
                 $xml->addProduct($products[$i]);
                 $page->close();
+                break;
             }
+            sleep(1);
         }
 
-        file_put_contents(\Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('power.error')), implode("\n", $errors));
-        \Yii::$app->settings->set('power.date', time());
-        \Yii::$app->settings->set('power.error_count', count($errors));
+        file_put_contents(\Yii::getAlias('@frontend/web/' . \Yii::$app->settings->get('eastmarine.error')), implode("\n", $errors));
+        \Yii::$app->settings->set('eastmarine.date', time());
+        \Yii::$app->settings->set('eastmarine.error_count', count($errors));
 
-        $xml->save('@frontend/web/' . \Yii::$app->settings->get('power.xml'));
-        \Yii::$app->settings->set('power.date', time());
-        \Yii::$app->settings->set('power.is_job', false);
+        $xml->save('@frontend/web/' . \Yii::$app->settings->get('eastmarine.xml'));
+        \Yii::$app->settings->set('eastmarine.date', time());
+        \Yii::$app->settings->set('eastmarine.is_job', false);
 
     }
 
@@ -97,8 +102,8 @@ class Parser
     {
         $requests = [];
         foreach ($products as $i => $product) {
-            $requests[$i] = $this->client->post(self::URL . 'profile/parts/cart/add_item', [
-                'art' => $product->barcode->value
+            $requests[$i] = $this->client->post(self::URL . 'shop/search', [
+                'filter' => ['art_no' => $product->barcode->value]
             ]);
         }
         return  $this->client->batch($requests);
@@ -108,8 +113,8 @@ class Parser
     private function auth()
     {
         $form = new LoginForm([
-            'login' => \Yii::$app->settings->get('power.login'),
-            'password' => \Yii::$app->settings->get('power.password'),
+            'username' => \Yii::$app->settings->get('eastmarine.login'),
+            'password' => \Yii::$app->settings->get('eastmarine.password'),
         ]);
 
         $response = $this->client->post($form->action, $form->data)->send();

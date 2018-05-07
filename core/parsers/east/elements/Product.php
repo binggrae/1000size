@@ -1,17 +1,13 @@
 <?php
 
 
-namespace core\parsers\bch\elements;
+namespace core\parsers\east\elements;
 
-
-use core\parsers\bch\Api;
 use core\services\exports\ProductExported;
 use core\services\exports\XmlElement;
 
 class Product extends ProductExported
 {
-    /** @var string  */
-    public $link;
 
     /** @var XmlElement  */
     public $barcode;
@@ -23,7 +19,7 @@ class Product extends ProductExported
     public $unit;
 
     /** @var XmlElement[]  */
-    public $storages = [];
+    public $storage = [];
 
     /** @var XmlElement  */
     public $purchase;
@@ -31,12 +27,13 @@ class Product extends ProductExported
     /** @var XmlElement  */
     public $retail;
 
-    public function __construct($link)
+    public function __construct($barcode, $factor)
     {
-        $this->link = Api::URL . urlencode($link);
-
-        parent::__construct(null, null);
+        parent::__construct($barcode, $factor);
+        $this->unit->set('шт.');
+        $this->storage = new XmlElement('Остаток', 0, ['Склад' => 'Склад Владивосток']);
     }
+
 
 
 }

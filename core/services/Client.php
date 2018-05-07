@@ -16,6 +16,8 @@ class Client
      */
     private $client;
 
+    private $cookie;
+
     public function __construct(BaseClient $client)
     {
         $this->client = $client;
@@ -51,9 +53,10 @@ class Client
      */
     private function send($method, $url, $data = [])
     {
+        $cookie =  'cookie.' . ($this->cookie ?: '_all');
         $opt = [
-            CURLOPT_COOKIEJAR => \Yii::getAlias('@common/data/cookie.txt'),
-            CURLOPT_COOKIEFILE => \Yii::getAlias('@common/data/cookie.txt'),
+            CURLOPT_COOKIEJAR => \Yii::getAlias('@common/data/'.$cookie.'.txt'),
+            CURLOPT_COOKIEFILE => \Yii::getAlias('@common/data/'.$cookie.'.txt'),
             CURLOPT_TIMEOUT => 100,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
@@ -61,11 +64,6 @@ class Client
         ];
 
 
-//        if($method == 'post') {
-//            $opt[CURLOPT_VERBOSE] = true;
-//        }
-
-//        $this->client->batchSend()
         $response = $this->client->createRequest()
             ->setMethod($method)
             ->setUrl($url)
@@ -73,6 +71,14 @@ class Client
             ->setOptions($opt);
 
         return $response;
+    }
+
+    /**
+     * @param mixed $cookie
+     */
+    public function setCookie($cookie)
+    {
+        $this->cookie = $cookie;
     }
 
 }

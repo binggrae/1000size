@@ -11,7 +11,6 @@ class ProductPage extends Page
         $posStart = strpos($html, '<div class="wrapper1');
         $posEnd = strpos($html, '<footer');
         $html = substr($html, $posStart, $posEnd - $posStart);
-        file_put_contents(\Yii::getAlias('@common/data/pview.html'), $html);
 
         parent::__construct($html);
     }

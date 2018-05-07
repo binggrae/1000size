@@ -40,13 +40,13 @@ class Parser
         foreach ($this->categories as $category) {
             foreach ($this->getPowers($category) as $power) {
                 $power->save();
-                if($power->id < 15) {
+                if($power->id < 32) {
                     continue;
                 }
                 foreach ($this->getEquipment($power) as $i => $equipment) {
                     $equipment->power_id = $power->id;
                     $equipment->save();
-                    if($equipment->id < 949) {
+                    if($equipment->id < 1633) {
                         continue;
                     }
 

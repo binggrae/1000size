@@ -19,7 +19,7 @@ class Product extends ProductExported
     public $unit;
 
     /** @var XmlElement[]  */
-    public $storages = [];
+    public $storage = [];
 
     /** @var XmlElement  */
     public $purchase;
@@ -27,21 +27,13 @@ class Product extends ProductExported
     /** @var XmlElement  */
     public $retail;
 
-    public function __construct($barcode)
+    public function __construct($barcode, $factor)
     {
-        $this->barcode = new XmlElement('Артикул', $barcode);
-        $this->title = new XmlElement('Наименование');
-        $this->unit = new XmlElement('ЕдИзм', 'шт.');
-        $this->purchase = new XmlElement('ЦенаДилерская');
-        $this->retail = new XmlElement('ЦенаРозничная');
-        $this->storages = new Storage('Склад Москва');
+        parent::__construct($barcode, $factor);
+        $this->unit->set('шт.');
+        $this->storage = new XmlElement('Остаток', 0, ['Склад' => 'Склад Москва']);
     }
 
-    protected function getRetail()
-    {
-        $this->retail->set(number_format($this->purchase->value * 1.3, 2, '.', ''));
-        return $this->retail;
-    }
 
 
 }
