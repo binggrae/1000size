@@ -3,8 +3,7 @@
 
 namespace frontend\controllers;
 
-
-use core\jobs\east\ParseJob;
+use core\jobs\EastParseJob;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
@@ -34,10 +33,7 @@ class EastController extends Controller
     {
         \Yii::$app->settings->set('east.is_job', true);
 
-        \Yii::$app->queue->push(new ParseJob([
-            'login' => \Yii::$app->settings->get('eastmarine.login'),
-            'password' => \Yii::$app->settings->get('eastmarine.password'),
-        ]));
+        \Yii::$app->queue->push(new EastParseJob());
 
         sleep(5);
 
