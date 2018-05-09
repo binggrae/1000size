@@ -63,6 +63,7 @@ class Client
 //            CURLOPT_VERBOSE => true,
         ];
 
+//        var_dump($data);
 
         $response = $this->client->createRequest()
             ->setMethod($method)

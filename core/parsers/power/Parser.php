@@ -39,7 +39,7 @@ class Parser
         $import = new XmlImport(\Yii::$app->settings->get('power.list'));
         $list = $import->getList();
 
-        $chunks = array_chunk($list, 7, 1);
+        $chunks = array_chunk($list, 1, 1);
         $count = count($chunks);
         $errors = [];
 
@@ -97,7 +97,7 @@ class Parser
     {
         $requests = [];
         foreach ($products as $i => $product) {
-            $requests[$i] = $this->client->post(self::URL . 'profile/parts/cart/add_item', [
+            $requests[$i] = $this->client->post(self::URL . 'profile/parts/cart/add_item.html', [
                 'art' => $product->barcode->value
             ]);
         }
