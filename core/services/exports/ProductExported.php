@@ -59,6 +59,7 @@ abstract class ProductExported
         $purchase = ((double)str_replace(',', '.', $this->purchase->value));
         $retail = round($purchase * $this->factor, 2);
 
+        var_dump($this->factor, $retail, $this->retail->value);
         $this->retail->set(max($retail, $this->retail->value));
 
         return $this->retail;
