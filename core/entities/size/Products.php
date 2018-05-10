@@ -8,8 +8,8 @@ use core\entities\ProductInterface;
  * This is the model class for table "products".
  *
  * @property int $id
- * @property int $category_id
  * @property string $link
+ * @property int $load_ts
  * @property int $status
  * @property string $barcode
  * @property string $title
@@ -21,36 +21,77 @@ use core\entities\ProductInterface;
  * @property string $brand
  * @property string $country
  */
-class Products extends \yii\db\ActiveRecord implements ProductInterface
+class Products extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+
+    const STATUS_NEW = 0;
+    const STATUS_ACTIVE = 5;
+    const STATUS_INACTIVE = 10;
+    const STATUS_REMOVE = 15;
+
+    public static function create($barcode)
+    {
+        $product = new self();
+        $product->barcode = $barcode;
+        $product->title = 'new';
+        $product->status = self::STATUS_NEW;
+
+        return $product;
+    }
+
+
     public static function tableName()
     {
         return 'products';
     }
 
-    /**
-     * @inheritdoc
-     */
+    public static function getStatusList()
+    {
+        return [
+            self::STATUS_REMOVE => 'Удален',
+            self::STATUS_NEW => 'Новый',
+            self::STATUS_ACTIVE => 'Загружен',
+            self::STATUS_INACTIVE => 'Не активен',
+        ];
+    }
+
+    public function getStatusValue()
+    {
+        $labels = self::getStatusList();
+
+        return $labels[$this->status];
+    }
+
+
+    public function getStatusClass()
+    {
+        $classes = [
+            self::STATUS_REMOVE => 'label label-danger',
+            self::STATUS_NEW => 'label label-info',
+            self::STATUS_ACTIVE => 'label label-success',
+            self::STATUS_INACTIVE => 'label label-warning',
+        ];
+
+        return $classes[$this->status];
+    }
+
     public function rules()
     {
         return [
             [['barcode', 'title'], 'required'],
-            [['storageM', 'storageV', 'purchase', 'retail', 'category_id', 'status'], 'integer'],
+            [['storageM', 'storageV', 'purchase', 'retail', 'load_ts', 'status'], 'integer'],
             [['link', 'barcode', 'title', 'unit', 'brand', 'country'], 'string', 'max' => 255],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
-            'barcodeVal' => 'Артикул',
+            'barcode' => 'Артикул',
+            'status' => 'Статус',
+            'load_ts' => 'Дата изменения',
             'titleVal' => 'Название',
             'unitVal' => 'Единица измерения',
             'storageMVal' => 'Склад  1',
@@ -62,75 +103,5 @@ class Products extends \yii\db\ActiveRecord implements ProductInterface
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function getBarcodeVal()
-    {
-        return $this->barcode;
-    }
 
-    /**
-     * @return string
-     */
-    public function getCountryVal()
-    {
-        return $this->country;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitleVal()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnitVal()
-    {
-        return $this->unit;
-    }
-
-    /**
-     * @return int
-     */
-    public function getStorageMVal()
-    {
-        return $this->storageM;
-    }
-
-    /**
-     * @return int
-     */
-    public function getStorageVVal()
-    {
-        return $this->storageV;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPurchaseVal()
-    {
-        return $this->purchase;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRetailVal()
-    {
-        return $this->retail;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBrandVal()
-    {
-        return $this->brand;
-    }
 }

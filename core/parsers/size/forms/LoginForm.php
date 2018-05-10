@@ -1,7 +1,7 @@
 <?php
 
 
-namespace core\forms\size;
+namespace core\parsers\size\forms;
 
 
 use yii\base\Model;

@@ -6,6 +6,7 @@ namespace frontend\controllers;
 
 use core\entities\power\Products as PowerProducts;
 use core\entities\size\Products as SizeProducts;
+use core\entities\size\Products;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
@@ -30,11 +31,11 @@ class DashboardController extends Controller
     public function actionIndex()
     {
         $size = [
-            'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('parser.date')),
-            'count' => SizeProducts::find()->where(['status' => 0])->count(),
-            'status' => \Yii::$app->settings->get('parser.is_job'),
-            'xml' => \Yii::$app->settings->get('file.xml'),
-            'xls' => \Yii::$app->settings->get('file.xls'),
+            'date' => date('d.m.Y H:i:s', \Yii::$app->settings->get('size.date')),
+            'count' => \Yii::$app->settings->get('size.count'),
+            'error' => Products::find()->where(['status' => Products::STATUS_REMOVE])->count(),
+            'xml' => \Yii::$app->settings->get('size.xml'),
+            'xls' => \Yii::$app->settings->get('size.xls'),
         ];
 
         $power = [

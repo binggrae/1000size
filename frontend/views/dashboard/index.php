@@ -11,6 +11,7 @@
 
 use core\entities\power\Products as PowerProducts;
 use yii\bootstrap\Html;
+use yii\helpers\Url;
 
 $this->title = 'Панель управления';
 ?>
@@ -24,34 +25,19 @@ $this->title = 'Панель управления';
                         1000size
                     </h3>
                     <div class="box-tools pull-right">
-                        <?= Html::a('<i class="fa fa-list text-blue"></i>', ['/size-parser/categories'], [
+                        <?= Html::a('<i class="fa fa-list text-blue"></i>', ['/size/index'], [
                             'class' => 'btn btn-default btn-sm',
                             'title' => 'Статистика'
                         ]) ?>
-                        <?php if (!$size['status']) : ?>
-                            <?= Html::a('<i class="fa fa-play text-green"></i>', ['/size-parser/start'], [
-                                'class' => 'btn btn-default btn-sm',
-                                'title' => 'Запустить'
-                            ]) ?>
-                        <?php else : ?>
-                            <?= Html::a('<i class="fa fa-stop"></i>', ['/size-parser/start'], [
-                                'class' => 'btn btn-danger btn-sm disabled',
-                                'title' => 'В работе'
-                            ]) ?>
-                        <?php endif; ?>
+                        <?= Html::a('<i class="fa fa-play text-green"></i>', ['/size/save'], [
+                            'class' => 'btn btn-default btn-sm',
+                            'title' => 'Запустить'
+                        ]) ?>
                     </div>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive no-padding">
                         <table class="table">
-                            <tr>
-                                <td>Статус:</td>
-                                <td>
-                                    <div class="label label-<?= ($size['status'] ? 'primary' : 'success'); ?>">
-                                        <?= ($size['status'] ? 'В работе' : 'Ожидает запуск'); ?>
-                                    </div>
-                                </td>
-                            </tr>
                             <tr>
                                 <td>Дата:</td>
                                 <td><?= $size['date']; ?></td>
@@ -59,6 +45,12 @@ $this->title = 'Панель управления';
                             <tr>
                                 <td>Количество:</td>
                                 <td><?= $size['count']; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Ошибки:</td>
+                                <td>
+                                    <a href="<?= Url::to(['size/error']) ?>" target="_blank"><?= $size['error']; ?></a>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Xml:</td>

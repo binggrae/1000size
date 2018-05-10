@@ -21,6 +21,8 @@ abstract class ProductExported
     /** @var XmlElement */
     public $unit;
 
+    public $_attributes = [];
+
     public $factor;
 
     public function __construct($barcode, $factor)
@@ -49,11 +51,6 @@ abstract class ProductExported
         return !!$this->barcode->value;
     }
 
-    public function getXmlAttributes()
-    {
-        return [];
-    }
-
     public function getRetail()
     {
         $purchase = ((double)str_replace(',', '.', $this->purchase->value));
@@ -62,5 +59,15 @@ abstract class ProductExported
         $this->retail->set(max($retail, $this->retail->value));
 
         return $this->retail;
+    }
+
+    public function getXmlAttributes()
+    {
+        return $this->_attributes;
+    }
+
+    public function setXmlAttribute ($name, $value)
+    {
+        $this->_attributes[$name] = $value;
     }
 }
